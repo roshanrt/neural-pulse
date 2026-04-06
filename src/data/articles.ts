@@ -20,7 +20,7 @@ export const sampleArticles: Article[] = [
       slug: "roshan",
       avatar: "/images/author-roshan.svg",
       bio: "Cybersecurity professional and AI enthusiast",
-      social: { twitter: "neuralvibes", github: "neuralvibes" },
+      social: { twitter: "techrupt", github: "techrupt" },
     },
     publishedAt: "2026-04-06T10:00:00Z",
     readingTime: 7,

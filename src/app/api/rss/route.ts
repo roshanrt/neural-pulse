@@ -19,7 +19,7 @@ export async function GET() {
       rss2: `${siteConfig.url}/api/rss`,
     },
     author: {
-      name: "Neural Vibes",
+      name: "Techrupt",
       link: siteConfig.url,
     },
   });

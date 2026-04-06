@@ -1,14 +1,14 @@
 import { SiteConfig, Category } from "@/types";
 
 export const siteConfig: SiteConfig = {
-  name: "Neural Vibes",
+  name: "Techrupt",
   description: "Breaking news and deep analysis on Tech, AI & Cybersecurity",
   url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   ogImage: "/images/og-default.png",
   links: {
-    twitter: "https://twitter.com/neuralvibes",
-    github: "https://github.com/neuralvibes",
-    youtube: "https://youtube.com/@neuralvibes",
+    twitter: "https://twitter.com/techrupt",
+    github: "https://github.com/techrupt",
+    youtube: "https://youtube.com/@techrupt",
   },
 };
 

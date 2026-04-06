@@ -43,7 +43,7 @@ function buildJsonLd(article: (typeof sampleArticles)[number]) {
     },
     publisher: {
       "@type": "Organization",
-      name: "Neural Vibes",
+      name: "Techrupt",
     },
     keywords: article.tags.join(", "),
     articleSection: article.category.name,

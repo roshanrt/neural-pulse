@@ -7,7 +7,7 @@ import { siteConfig } from "@/data/config";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Neural Vibes covers AI, cybersecurity, and tech news with a focus on depth, accuracy, and signal over noise.",
+    "Techrupt covers AI, cybersecurity, and tech news with a focus on depth, accuracy, and signal over noise.",
 };
 
 const values = [
@@ -54,7 +54,7 @@ export default function AboutPage() {
           Tech coverage built for people who actually build things.
         </h1>
         <p className="text-neutral-400 text-lg leading-relaxed max-w-2xl">
-          Neural Vibes is an independent publication covering AI, cybersecurity,
+          Techrupt is an independent publication covering AI, cybersecurity,
           and the technology decisions that shape how we work and live. We write
           for engineers, founders, and security professionals who need depth, not
           just headlines.
@@ -106,7 +106,7 @@ export default function AboutPage() {
             <p className="text-sm text-neutral-400 leading-relaxed">
               Roshan writes about the intersection of AI capabilities and
               security implications, with hands-on experience in offensive and
-              defensive security. Neural Vibes is built to fill the gap between
+              defensive security. Techrupt is built to fill the gap between
               shallow tech news and overly academic research.
             </p>
             <div className="flex gap-3 mt-4">

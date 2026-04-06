@@ -13,7 +13,7 @@ interface SearchPageProps {
 
 export const metadata: Metadata = {
   title: "Search",
-  description: "Search the latest articles on Neural Vibes.",
+  description: "Search the latest articles on Techrupt.",
 };
 
 const fuse = new Fuse(sampleArticles, {

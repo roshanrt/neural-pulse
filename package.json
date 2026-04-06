@@ -1,8 +1,8 @@
 {
-  "name": "neural-vibes",
+  "name": "techrupt",
   "version": "0.1.0",
   "private": true,
-  "description": "Neural Vibes — Tech, AI & Cybersecurity News",
+  "description": "Techrupt — Tech, AI & Cybersecurity News",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

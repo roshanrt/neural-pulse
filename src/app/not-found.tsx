@@ -21,7 +21,7 @@ export default function NotFound() {
           className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-500 text-surface-0 font-display font-medium text-sm rounded-full hover:bg-brand-400 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back to Neural Vibes
+          Back to Techrupt
         </Link>
       </div>
     </div>

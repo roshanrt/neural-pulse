@@ -5,7 +5,7 @@ import NewsletterCTA from "@/components/ui/NewsletterCTA";
 
 export const metadata: Metadata = {
   title: "Newsletter",
-  description: "Subscribe to Neural Vibes for weekly AI, cybersecurity, and tech briefings.",
+  description: "Subscribe to Techrupt for weekly AI, cybersecurity, and tech briefings.",
 };
 
 const highlights = [

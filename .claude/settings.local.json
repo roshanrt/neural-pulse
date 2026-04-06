@@ -1,0 +1,7 @@
+{
+  "enabledPlugins": {
+    "engineering-advanced-skills@claude-code-skills": true,
+    "fullstack-engineer@claude-code-skills": true,
+    "content-creator@claude-code-skills": true
+  }
+}

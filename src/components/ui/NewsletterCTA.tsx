@@ -21,11 +21,19 @@ export default function NewsletterCTA() {
     setStatus("loading");
 
     try {
-      // TODO: replace with your newsletter provider API call
-      // e.g. await fetch("/api/subscribe", { method: "POST", body: JSON.stringify({ email }) })
-      await new Promise((res) => setTimeout(res, 800)); // simulate network
-      setStatus("success");
-      setEmail("");
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setStatus("error");
+        setErrorMessage(data.error ?? "Something went wrong. Please try again.");
+      } else {
+        setStatus("success");
+        setEmail("");
+      }
     } catch {
       setStatus("error");
       setErrorMessage("Something went wrong. Please try again.");

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { categories } from "@/data/config";
-import { sampleArticles } from "@/data/articles";
+import { getArticlesByCategory } from "@/lib/articles";
 import ArticleCard from "@/components/articles/ArticleCard";
 import type { Metadata } from "next";
 
@@ -25,9 +25,7 @@ export default function CategoryPage({ params }: PageProps) {
   const category = categories.find((c) => c.slug === params.slug);
   if (!category) notFound();
 
-  const articles = sampleArticles.filter(
-    (a) => a.category.slug === category.slug
-  );
+  const articles = getArticlesByCategory(category.slug);
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12">

@@ -1,7 +1,12 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Clock, Share2, Bookmark } from "lucide-react";
-import { sampleArticles } from "@/data/articles";
+import { MDXRemote } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
+import rehypeSlug from "rehype-slug";
+import { getAllArticles, getArticleBySlug } from "@/lib/articles";
+import { siteConfig } from "@/data/config";
 import { formatDate } from "@/lib/utils";
 import NewsletterCTA from "@/components/ui/NewsletterCTA";
 import ArticleCard from "@/components/articles/ArticleCard";
@@ -12,7 +17,7 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const article = sampleArticles.find((a) => a.slug === params.slug);
+  const article = getArticleBySlug(params.slug);
   if (!article) return { title: "Article Not Found" };
 
   return {
@@ -29,7 +34,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-function buildJsonLd(article: (typeof sampleArticles)[number]) {
+function buildJsonLd(article: NonNullable<ReturnType<typeof getArticleBySlug>>) {
   return {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
@@ -37,13 +42,26 @@ function buildJsonLd(article: (typeof sampleArticles)[number]) {
     description: article.excerpt,
     datePublished: article.publishedAt,
     dateModified: article.updatedAt ?? article.publishedAt,
+    image: {
+      "@type": "ImageObject",
+      url: `${siteConfig.url}${article.coverImage}`,
+    },
     author: {
       "@type": "Person",
       name: article.author.name,
+      url: `${siteConfig.url}/about`,
     },
     publisher: {
       "@type": "Organization",
-      name: "Techrupt",
+      name: siteConfig.name,
+      logo: {
+        "@type": "ImageObject",
+        url: `${siteConfig.url}/images/og-default.png`,
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${siteConfig.url}/article/${article.slug}`,
     },
     keywords: article.tags.join(", "),
     articleSection: article.category.name,
@@ -51,14 +69,14 @@ function buildJsonLd(article: (typeof sampleArticles)[number]) {
 }
 
 export function generateStaticParams() {
-  return sampleArticles.map((article) => ({ slug: article.slug }));
+  return getAllArticles().map((article) => ({ slug: article.slug }));
 }
 
 export default function ArticlePage({ params }: PageProps) {
-  const article = sampleArticles.find((a) => a.slug === params.slug);
+  const article = getArticleBySlug(params.slug);
   if (!article) notFound();
 
-  const related = sampleArticles
+  const related = getAllArticles()
     .filter((a) => a.slug !== article.slug && a.category.slug === article.category.slug)
     .slice(0, 2);
 
@@ -131,28 +149,17 @@ export default function ArticlePage({ params }: PageProps) {
         />
       </div>
 
-      {/* Article body placeholder */}
-      <div className="prose prose-invert max-w-none mb-16">
-        <p className="text-neutral-300 leading-relaxed text-lg">
-          This is a placeholder for the full article content. When you connect
-          your MDX pipeline or CMS, the article body will render here with full
-          rich text support, code blocks, images, and embedded media.
-        </p>
-        <h2 className="font-display">Section heading example</h2>
-        <p className="text-neutral-300 leading-relaxed">
-          Your content pipeline will pull articles from local MDX files, a
-          headless CMS, or the AI-assisted drafting workflow. Each article
-          supports syntax-highlighted code blocks, embedded tweets, YouTube
-          embeds, and custom callout components.
-        </p>
-        <pre className="bg-surface-300 rounded-lg p-4 overflow-x-auto">
-          <code className="text-brand-500 text-sm font-mono">
-            {`// Example: fetching article from MDX
-import { getArticleBySlug } from '@/lib/articles';
-
-const article = await getArticleBySlug('${article.slug}');`}
-          </code>
-        </pre>
+      {/* Article body */}
+      <div className="prose prose-invert prose-headings:font-display prose-headings:text-white prose-p:text-neutral-300 prose-a:text-brand-500 prose-code:text-brand-400 prose-pre:bg-surface-300 prose-strong:text-white max-w-none mb-16">
+        <MDXRemote
+          source={article.content}
+          options={{
+            mdxOptions: {
+              remarkPlugins: [remarkGfm],
+              rehypePlugins: [rehypeHighlight, rehypeSlug],
+            },
+          }}
+        />
       </div>
 
       {/* Tags */}

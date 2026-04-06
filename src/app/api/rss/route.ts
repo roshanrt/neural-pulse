@@ -1,5 +1,5 @@
 import { Feed } from "feed";
-import { sampleArticles } from "@/data/articles";
+import { getAllArticles } from "@/lib/articles";
 import { siteConfig } from "@/data/config";
 
 export const dynamic = "force-static";
@@ -24,7 +24,7 @@ export async function GET() {
     },
   });
 
-  for (const article of sampleArticles) {
+  for (const article of getAllArticles()) {
     feed.addItem({
       title: article.title,
       id: `${siteConfig.url}/article/${article.slug}`,

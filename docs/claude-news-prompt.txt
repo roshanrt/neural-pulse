@@ -1,0 +1,9 @@
+Write a 500-word news article for TechRupt.me about [topic].
+Include: what happened, who's affected, technical details, and
+what readers should do. Tone: professional editorial, not hype.
+
+Constraints:
+- Use only information from the provided source(s).
+- Avoid filler phrases and marketing language.
+- Keep paragraphs short and scannable.
+- End with practical actions for readers.

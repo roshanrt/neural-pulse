@@ -86,6 +86,13 @@ npm run lint       # ESLint
 npm run type-check # TypeScript check
 ```
 
+## Newsroom Workflow
+
+- Editorial SOP: `docs/newsroom-workflow.md`
+- Source registry: `docs/source-registry.md`
+- AI prompt template: `docs/claude-news-prompt.txt`
+- Article scaffold: `content/articles/_article-template.mdx`
+
 ## License
 
 Private — All rights reserved.

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowLeft, Search } from "lucide-react";
 import Fuse from "fuse.js";
 import ArticleCard from "@/components/articles/ArticleCard";
-import { sampleArticles } from "@/data/articles";
+import { getAllArticles } from "@/lib/articles";
 
 interface SearchPageProps {
   searchParams?: {
@@ -16,7 +16,8 @@ export const metadata: Metadata = {
   description: "Search the latest articles on Techrupt.",
 };
 
-const fuse = new Fuse(sampleArticles, {
+const allArticles = getAllArticles();
+const fuse = new Fuse(allArticles, {
   keys: [
     { name: "title", weight: 0.4 },
     { name: "excerpt", weight: 0.25 },
@@ -32,7 +33,7 @@ export default function SearchPage({ searchParams }: SearchPageProps) {
   const query = searchParams?.q?.trim() ?? "";
   const results = query
     ? fuse.search(query).map((r) => r.item)
-    : sampleArticles;
+    : allArticles;
 
   return (
     <section className="mx-auto max-w-7xl px-4 sm:px-6 py-10 md:py-14">

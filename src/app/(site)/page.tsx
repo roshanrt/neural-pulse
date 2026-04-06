@@ -3,12 +3,13 @@ import Link from "next/link";
 import ArticleCard from "@/components/articles/ArticleCard";
 import HeroScene from "@/components/three/HeroSceneClient";
 import NewsletterCTA from "@/components/ui/NewsletterCTA";
-import { sampleArticles } from "@/data/articles";
+import { getAllArticles } from "@/lib/articles";
 import { categories } from "@/data/config";
 
 export default function HomePage() {
-  const featured = sampleArticles.filter((a) => a.featured);
-  const latest = sampleArticles.filter((a) => !a.featured);
+  const articles = getAllArticles();
+  const featured = articles.filter((a) => a.featured);
+  const latest = articles.filter((a) => !a.featured);
 
   return (
     <>
@@ -118,7 +119,7 @@ export default function HomePage() {
               <h3 className="font-display font-bold text-sm text-white mb-4 uppercase tracking-wider">
                 Trending
               </h3>
-              {sampleArticles.slice(0, 4).map((article) => (
+              {articles.slice(0, 4).map((article) => (
                 <ArticleCard
                   key={article.slug}
                   article={article}

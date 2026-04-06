@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /api/
+Disallow: /admin/
+Disallow: /drafts/
+
+Sitemap: https://techrupt.me/sitemap.xml
+Sitemap: https://techrupt.me/news-sitemap.xml

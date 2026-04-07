@@ -9,7 +9,9 @@ import { categories } from "@/data/config";
 export default function HomePage() {
   const articles = getAllArticles();
   const featured = articles.filter((a) => a.featured);
-  const latest = articles.filter((a) => !a.featured);
+  const topStory = featured[0] ?? articles[0] ?? null;
+  const featuredGrid = featured.filter((a) => a.slug !== topStory?.slug).slice(0, 2);
+  const latest = articles.filter((a) => a.slug !== topStory?.slug && !a.featured);
 
   return (
     <>
@@ -60,20 +62,25 @@ export default function HomePage() {
           <div className="flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-brand-500" />
             <h2 className="font-display font-bold text-xl text-white">
-              Featured
+              Top Story
             </h2>
           </div>
         </div>
-        <div className="grid md:grid-cols-2 gap-6">
-          {featured.map((article) => (
-            <ArticleCard
-              key={article.slug}
-              article={article}
-              variant="featured"
-            />
-          ))}
-        </div>
+        {topStory && <ArticleCard article={topStory} variant="featured" />}
       </section>
+
+      {featuredGrid.length > 0 && (
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 mb-16">
+          <h2 className="font-display font-bold text-xl text-white mb-6">
+            Featured
+          </h2>
+          <div className="grid md:grid-cols-2 gap-6 auto-rows-fr">
+            {featuredGrid.map((article) => (
+              <ArticleCard key={article.slug} article={article} variant="featured" />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ── Latest + Sidebar ── */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 mb-16">
@@ -83,7 +90,7 @@ export default function HomePage() {
             <h2 className="font-display font-bold text-xl text-white mb-6">
               Latest Stories
             </h2>
-            <div className="grid sm:grid-cols-2 gap-6">
+            <div className="grid sm:grid-cols-2 gap-6 auto-rows-fr">
               {latest.map((article) => (
                 <ArticleCard key={article.slug} article={article} />
               ))}
@@ -91,7 +98,7 @@ export default function HomePage() {
           </div>
 
           {/* Sidebar */}
-          <aside className="space-y-8">
+          <aside className="flex flex-col gap-8">
             {/* Categories */}
             <div className="rounded-xl bg-surface-200 border border-white/5 p-5">
               <h3 className="font-display font-bold text-sm text-white mb-4 uppercase tracking-wider">
@@ -115,8 +122,8 @@ export default function HomePage() {
             </div>
 
             {/* Trending (placeholder) */}
-            <div className="rounded-xl bg-surface-200 border border-white/5 p-5">
-              <h3 className="font-display font-bold text-sm text-white mb-4 uppercase tracking-wider">
+            <div className="rounded-xl bg-surface-200 border border-white/5 p-5 max-h-96 overflow-y-auto">
+              <h3 className="font-display font-bold text-sm text-white mb-4 uppercase tracking-wider sticky top-0 bg-surface-200">
                 Trending
               </h3>
               {articles.slice(0, 4).map((article) => (

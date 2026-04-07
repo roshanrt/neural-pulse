@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
+import { createSlug } from "@/lib/content/slugify";
 
 export function cn(...inputs: ClassValue[]) {
   return clsx(inputs);
@@ -23,10 +24,5 @@ export function formatDate(dateStr: string): string {
 }
 
 export function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .trim();
+  return createSlug(text);
 }

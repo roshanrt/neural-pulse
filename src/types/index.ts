@@ -11,6 +11,41 @@ export interface Article {
   updatedAt?: string;
   readingTime: number;
   featured: boolean;
+  source?: string;
+  sourceUrl?: string;
+  hash?: string;
+  priorityScore?: number;
+  sections?: ArticleSections;
+}
+
+export interface ArticleSections {
+  summary: string;
+  technicalDetails: string;
+  impact: string;
+  exploitation: string;
+  detection: string;
+  mitigation: string;
+  whyItMatters: string;
+}
+
+export interface ArticleJsonOutput {
+  slug: string;
+  title: string;
+  category: CategorySlug;
+  source: string;
+  sourceUrl: string;
+  excerpt: string;
+  publishedAt: string;
+  tags: string[];
+  hash: string;
+  featured: boolean;
+  priorityScore: number;
+  sections: ArticleSections;
+}
+
+export interface ArticleBundleOutput {
+  markdown: string;
+  json: ArticleJsonOutput;
 }
 
 export interface Author {

@@ -5,11 +5,12 @@ import ArticleCard from "@/components/articles/ArticleCard";
 import type { Metadata } from "next";
 
 interface PageProps {
-  params: { slug: string };
+  params: Promise<{ category: string }>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const category = categories.find((c) => c.slug === params.slug);
+  const { category: categorySlug } = await params;
+  const category = categories.find((c) => c.slug === categorySlug);
   if (!category) return { title: "Category Not Found" };
   return {
     title: category.name,
@@ -18,11 +19,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export function generateStaticParams() {
-  return categories.map((c) => ({ slug: c.slug }));
+  return categories.map((c) => ({ category: c.slug }));
 }
 
-export default function CategoryPage({ params }: PageProps) {
-  const category = categories.find((c) => c.slug === params.slug);
+export default async function CategoryPage({ params }: PageProps) {
+  const { category: categorySlug } = await params;
+  const category = categories.find((c) => c.slug === categorySlug);
   if (!category) notFound();
 
   const articles = getArticlesByCategory(category.slug);

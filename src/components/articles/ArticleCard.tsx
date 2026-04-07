@@ -13,10 +13,10 @@ export default function ArticleCard({ article, variant = "default" }: ArticleCar
     return (
       <Link
         href={`/article/${article.slug}`}
-        className="group relative block overflow-hidden rounded-2xl bg-surface-200 card-hover"
+        className="group relative flex flex-col h-full overflow-hidden rounded-2xl bg-surface-200 card-hover"
       >
         {/* Image placeholder */}
-        <div className="aspect-[16/9] bg-surface-300 relative overflow-hidden">
+        <div className="aspect-[16/9] bg-surface-300 relative overflow-hidden flex-shrink-0">
           <div className="absolute inset-0 bg-gradient-to-t from-surface-200 via-transparent to-transparent z-10" />
           <div
             className="absolute inset-0 opacity-20"
@@ -26,7 +26,7 @@ export default function ArticleCard({ article, variant = "default" }: ArticleCar
           />
         </div>
 
-        <div className="p-6">
+        <div className="p-6 flex flex-col flex-grow">
           <span
             className="category-badge mb-3"
             style={{
@@ -61,11 +61,11 @@ export default function ArticleCard({ article, variant = "default" }: ArticleCar
     return (
       <Link
         href={`/article/${article.slug}`}
-        className="group flex gap-4 py-4 border-b border-white/5 last:border-0"
+        className="group flex gap-3 py-3 border-b border-white/5 last:border-0 hover:bg-surface-300/30 transition-colors rounded px-1"
       >
         <div className="flex-1 min-w-0">
           <span
-            className="category-badge mb-1.5 text-[10px]"
+            className="category-badge mb-1 text-[9px] inline-block"
             style={{
               backgroundColor: `${article.category.color}15`,
               color: article.category.color,
@@ -73,14 +73,13 @@ export default function ArticleCard({ article, variant = "default" }: ArticleCar
           >
             {article.category.name}
           </span>
-          <h3 className="font-display font-semibold text-sm text-white group-hover:text-brand-500 transition-colors leading-snug line-clamp-2">
+          <h3 className="font-display font-semibold text-xs text-white group-hover:text-brand-500 transition-colors leading-tight line-clamp-2">
             {article.title}
           </h3>
-          <span className="text-xs text-neutral-500 mt-1 block">
+          <span className="text-[10px] text-neutral-600 mt-0.5 block">
             {formatDate(article.publishedAt)}
           </span>
         </div>
-        <div className="w-20 h-16 rounded-lg bg-surface-300 flex-shrink-0" />
       </Link>
     );
   }
@@ -89,9 +88,9 @@ export default function ArticleCard({ article, variant = "default" }: ArticleCar
   return (
     <Link
       href={`/article/${article.slug}`}
-      className="group block overflow-hidden rounded-xl bg-surface-200 card-hover"
+      className="group flex flex-col h-full overflow-hidden rounded-xl bg-surface-200 card-hover"
     >
-      <div className="aspect-[16/10] bg-surface-300 relative overflow-hidden">
+      <div className="aspect-[16/10] bg-surface-300 relative overflow-hidden flex-shrink-0">
         <div
           className="absolute inset-0 opacity-15"
           style={{
@@ -99,7 +98,7 @@ export default function ArticleCard({ article, variant = "default" }: ArticleCar
           }}
         />
       </div>
-      <div className="p-5">
+      <div className="p-5 flex flex-col flex-grow">
         <span
           className="category-badge mb-2 text-[10px]"
           style={{

@@ -41,7 +41,7 @@ export default function NewsletterCTA() {
   };
 
   return (
-    <section className="relative overflow-hidden rounded-2xl bg-surface-200 border border-white/5 p-8 md:p-12">
+    <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-surface-200 to-surface-300 border border-slate-200 p-8 md:p-12">
       <div
         className="absolute inset-0 opacity-10"
         aria-hidden="true"
@@ -50,26 +50,30 @@ export default function NewsletterCTA() {
             "radial-gradient(circle at 80% 20%, rgba(0,255,136,0.3), transparent 50%), radial-gradient(circle at 20% 80%, rgba(51,102,255,0.2), transparent 50%)",
         }}
       />
-      <div className="relative z-10 max-w-xl mx-auto text-center">
-        <h2 className="font-display font-bold text-2xl md:text-3xl text-white mb-2">
-          Stay ahead of the curve
-        </h2>
-        <p className="text-neutral-400 text-sm mb-6">
-          Weekly briefing on AI breakthroughs, critical vulnerabilities, and tech
-          trends. No spam, unsubscribe anytime.
-        </p>
+      <div className="relative z-10 max-w-xl mx-auto">
+        <div className="text-center mb-8">
+          <h2 className="font-display font-bold text-2xl md:text-3xl text-slate-900 mb-2">
+            Stay ahead of the curve
+          </h2>
+          <p className="text-neutral-700 text-sm md:text-base leading-relaxed">
+            Weekly briefing on AI breakthroughs, critical vulnerabilities, and tech
+            trends. No spam, unsubscribe anytime.
+          </p>
+        </div>
 
         {status === "success" ? (
-          <p className="text-brand-500 font-display font-medium">
-            You&apos;re in! Check your inbox to confirm.
-          </p>
+          <div className="rounded-lg bg-brand-500/10 border border-brand-500/30 p-4 text-center">
+            <p className="text-brand-400 font-display font-medium text-sm">
+              ✓ You&apos;re in! Check your inbox to confirm.
+            </p>
+          </div>
         ) : (
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col gap-3 max-w-md mx-auto"
+            className="space-y-3"
             noValidate
           >
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <label htmlFor="newsletter-email" className="sr-only">
                 Email address
               </label>
@@ -77,31 +81,36 @@ export default function NewsletterCTA() {
                 id="newsletter-email"
                 type="email"
                 required
-                placeholder="you@email.com"
+                placeholder="your@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={status === "loading"}
                 aria-describedby={errorMessage ? "newsletter-error" : undefined}
-                className="flex-1 px-4 py-2.5 rounded-full bg-surface-400 border border-white/10 text-white text-sm placeholder:text-neutral-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors disabled:opacity-50"
+                className="flex-1 px-4 py-3 rounded-lg bg-white border border-slate-300 text-slate-900 placeholder:text-neutral-500 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               />
               <button
                 type="submit"
                 disabled={status === "loading"}
-                className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-brand-500 text-surface-0 font-display font-medium text-sm rounded-full hover:bg-brand-400 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                className="btn-primary !px-6"
               >
                 {status === "loading" ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>Subscribing…</span>
+                  </>
                 ) : (
-                  <Send className="h-4 w-4" />
+                  <>
+                    <Send className="h-4 w-4" />
+                    <span>Subscribe</span>
+                  </>
                 )}
-                {status === "loading" ? "Subscribing…" : "Subscribe"}
               </button>
             </div>
             {errorMessage && (
               <p
                 id="newsletter-error"
                 role="alert"
-                className="text-red-400 text-xs text-left px-2"
+                className="text-red-400 text-xs text-center px-2"
               >
                 {errorMessage}
               </p>

@@ -63,9 +63,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN ?? "";
+  const skipPlausible =
+    !plausibleDomain ||
+    plausibleDomain === "localhost" ||
+    plausibleDomain === "127.0.0.1";
+
   return (
-    <html lang="en" className="dark">
-      <body className="min-h-screen bg-surface-50">
+    <html lang="en">
+      <body className="min-h-screen bg-surface-50 text-neutral-800">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
@@ -76,12 +82,14 @@ export default function RootLayout({
         />
         {children}
         {/* Plausible Analytics — privacy-first, no cookie consent required */}
-        <Script
-          defer
-          data-domain={process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN ?? "techrupt.me"}
-          src="https://plausible.io/js/script.js"
-          strategy="afterInteractive"
-        />
+        {!skipPlausible && (
+          <Script
+            defer
+            data-domain={plausibleDomain}
+            src="https://plausible.io/js/script.js"
+            strategy="afterInteractive"
+          />
+        )}
       </body>
     </html>
   );

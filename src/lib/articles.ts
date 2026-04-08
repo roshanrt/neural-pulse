@@ -7,8 +7,41 @@ import { Article } from "@/types";
 import { categories } from "@/data/config";
 import { buildArticleSections } from "@/lib/content/parser";
 import { createSlug } from "@/lib/content/slugify";
+import { getArticles as getNotionArticles, getArticleBySlug as getNotionArticleBySlug, type NotionArticle } from "@/lib/notion/articles";
 
 const ARTICLES_DIR = path.join(process.cwd(), "content/articles");
+
+function notionToArticle(article: NotionArticle): Article {
+  const category =
+    categories.find((item) => item.slug === article.category) ??
+    categories.find((item) => item.slug === "tech-news") ??
+    categories[0];
+  const publishedAt = article.publishedAt || new Date().toISOString();
+
+  return {
+    slug: createSlug(article.slug),
+    title: article.title,
+    excerpt: article.excerpt || article.body.substring(0, 160) || "No excerpt available.",
+    content: article.body || "",
+    coverImage: "/images/placeholder-ai.svg",
+    category,
+    tags: article.tags || [],
+    author: {
+      name: "Techrupt Editorial",
+      slug: "techrupt-editorial",
+      avatar: "/images/author-roshan.svg",
+      bio: "Editorial desk",
+    },
+    publishedAt,
+    readingTime: Math.ceil(readingTime(article.body || article.excerpt || "").minutes) || 1,
+    featured: article.type === "featured" || article.status === "Published",
+    source: "Techrupt Desk",
+    sourceUrl: article.sourceUrl || "",
+    hash: createHash("sha256").update(`${article.slug}|${publishedAt}`).digest("hex"),
+    priorityScore: 0,
+    sections: buildArticleSections(article.body || article.excerpt || ""),
+  };
+}
 
 function parseArticle(filename: string): Article {
   const raw = fs.readFileSync(path.join(ARTICLES_DIR, filename), "utf8");
@@ -62,10 +95,24 @@ function parseArticle(filename: string): Article {
   };
 }
 
-export function getAllArticles(): Article[] {
+export async function getAllArticles(): Promise<Article[]> {
+  const notionArticles = await getNotionArticles();
+  if (notionArticles.length > 0) {
+    return notionArticles
+      .map(notionToArticle)
+      .sort(
+        (a, b) =>
+          new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+      );
+  }
+
   const files = fs
     .readdirSync(ARTICLES_DIR)
-    .filter((f) => f.endsWith(".mdx") || f.endsWith(".md"));
+    .filter(
+      (f) =>
+        (f.endsWith(".mdx") || f.endsWith(".md")) &&
+        !f.startsWith("_")
+    );
 
   return files
     .map(parseArticle)
@@ -75,7 +122,12 @@ export function getAllArticles(): Article[] {
     );
 }
 
-export function getArticleBySlug(slug: string): Article | null {
+export async function getArticleBySlug(slug: string): Promise<Article | null> {
+  const notionArticle = await getNotionArticleBySlug(slug);
+  if (notionArticle) {
+    return notionToArticle(notionArticle);
+  }
+
   const safeSlug = createSlug(slug);
   const mdx = path.join(ARTICLES_DIR, `${safeSlug}.mdx`);
   const md = path.join(ARTICLES_DIR, `${safeSlug}.md`);
@@ -84,6 +136,7 @@ export function getArticleBySlug(slug: string): Article | null {
   return parseArticle(path.basename(filePath));
 }
 
-export function getArticlesByCategory(categorySlug: string): Article[] {
-  return getAllArticles().filter((a) => a.category.slug === categorySlug);
+export async function getArticlesByCategory(categorySlug: string): Promise<Article[]> {
+  const articles = await getAllArticles();
+  return articles.filter((a) => a.category.slug === categorySlug);
 }

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowLeft, Cookie } from "lucide-react";
+import { Cookie, Fingerprint, Settings2 } from "lucide-react";
+import StaticPageShell from "@/components/layout/StaticPageShell";
 
 export const metadata: Metadata = {
   title: "Cookie Policy",
@@ -9,42 +9,37 @@ export const metadata: Metadata = {
 
 export default function CookiePolicyPage() {
   return (
-    <section className="mx-auto max-w-4xl px-4 sm:px-6 py-10 md:py-14">
-      <Link
-        href="/"
-        className="inline-flex items-center gap-1.5 text-sm text-neutral-500 hover:text-brand-500 transition-colors mb-8"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Back to Home
-      </Link>
-
-      <div className="mb-10">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 mb-4">
-          <Cookie className="h-4 w-4 text-brand-500" />
-          <span className="text-brand-500 text-xs font-display font-medium tracking-wide uppercase">
-            Cookie Policy
-          </span>
+    <StaticPageShell
+      eyebrow="Cookie Policy"
+      title="Cookie usage explained."
+      description="We use essential cookies and privacy-first analytics to keep the website functional and measure performance."
+    >
+      <div className="grid gap-4">
+        <div className="grid md:grid-cols-3 gap-4">
+          {[
+            { icon: Cookie, title: "Essential only", description: "Required for core site behavior and basic functionality." },
+            { icon: Fingerprint, title: "Privacy-first analytics", description: "Aggregate usage measurement with minimal tracking identifiers." },
+            { icon: Settings2, title: "Browser controls", description: "You can manage or clear cookies in your browser settings at any time." },
+          ].map((item) => {
+            const Icon = item.icon;
+            return (
+              <div key={item.title} className="rounded-2xl bg-surface-200 border border-white/5 p-5">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-500/10 text-brand-500 mb-4">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <h2 className="font-display font-semibold text-white mb-2">{item.title}</h2>
+                <p className="text-sm text-neutral-400 leading-relaxed">{item.description}</p>
+              </div>
+            );
+          })}
         </div>
-        <h1 className="font-display font-black text-3xl md:text-5xl text-white leading-tight mb-4">
-          Cookie usage explained.
-        </h1>
-        <p className="text-neutral-400 text-lg leading-relaxed max-w-2xl">
-          We use essential cookies and privacy-first analytics to keep the
-          website functional and measure performance.
-        </p>
-      </div>
 
-      <div className="rounded-2xl bg-surface-200 border border-white/5 p-6 md:p-8 space-y-4 text-neutral-400 leading-relaxed">
-        <p>Essential cookies are required for core site behavior.</p>
-        <p>
-          Analytics tools may set limited tracking identifiers to help us
-          understand aggregate traffic patterns.
-        </p>
-        <p>
-          You can manage or clear cookies from your browser settings at any
-          time.
-        </p>
+        <div className="rounded-2xl bg-surface-200 border border-white/5 p-6 md:p-8 space-y-4 text-neutral-400 leading-relaxed">
+          <p>Essential cookies are required for core site behavior.</p>
+          <p>Analytics tools may set limited tracking identifiers to help us understand aggregate traffic patterns.</p>
+          <p>You can manage or clear cookies from your browser settings at any time.</p>
+        </div>
       </div>
-    </section>
+    </StaticPageShell>
   );
 }

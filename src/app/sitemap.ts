@@ -2,8 +2,8 @@ import { MetadataRoute } from "next";
 import { getAllArticles } from "@/lib/articles";
 import { categories, siteConfig } from "@/data/config";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const articles = getAllArticles();
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const articles = await getAllArticles();
   const base = siteConfig.url;
 
   return [

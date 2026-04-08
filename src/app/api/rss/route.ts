@@ -6,6 +6,7 @@ export const dynamic = "force-static";
 export const revalidate = 3600; // regenerate at most once per hour
 
 export async function GET() {
+  const articles = await getAllArticles();
   const feed = new Feed({
     title: siteConfig.name,
     description: siteConfig.description,
@@ -24,7 +25,7 @@ export async function GET() {
     },
   });
 
-  for (const article of getAllArticles()) {
+  for (const article of articles) {
     feed.addItem({
       title: article.title,
       id: `${siteConfig.url}/article/${article.slug}`,

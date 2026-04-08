@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowLeft, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import Fuse from "fuse.js";
 import ArticleCard from "@/components/articles/ArticleCard";
 import { getAllArticles } from "@/lib/articles";
@@ -16,82 +15,91 @@ export const metadata: Metadata = {
   description: "Search the latest articles on Techrupt.",
 };
 
-const allArticles = getAllArticles();
-const fuse = new Fuse(allArticles, {
-  keys: [
-    { name: "title", weight: 0.4 },
-    { name: "excerpt", weight: 0.25 },
-    { name: "tags", weight: 0.2 },
-    { name: "category.name", weight: 0.1 },
-    { name: "author.name", weight: 0.05 },
-  ],
-  threshold: 0.4,
-  includeScore: false,
-});
+export default async function SearchPage({ searchParams }: SearchPageProps) {
+  const allArticles = await getAllArticles();
+  const fuse = new Fuse(allArticles, {
+    keys: [
+      { name: "title", weight: 0.4 },
+      { name: "excerpt", weight: 0.25 },
+      { name: "tags", weight: 0.2 },
+      { name: "category.name", weight: 0.1 },
+      { name: "author.name", weight: 0.05 },
+    ],
+    threshold: 0.4,
+    includeScore: false,
+  });
 
-export default function SearchPage({ searchParams }: SearchPageProps) {
   const query = searchParams?.q?.trim() ?? "";
   const results = query
     ? fuse.search(query).map((r) => r.item)
     : allArticles;
 
   return (
-    <section className="mx-auto max-w-7xl px-4 sm:px-6 py-10 md:py-14">
-      <Link
-        href="/"
-        className="inline-flex items-center gap-1.5 text-sm text-neutral-500 hover:text-brand-500 transition-colors mb-8"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Back to Home
-      </Link>
+    <section className="mx-auto max-w-7xl px-4 sm:px-6 py-12 md:py-16">
 
-      <div className="max-w-2xl mb-10">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 mb-4">
+      <div className="max-w-3xl mb-12">
+        {/* Header */}
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 mb-6">
           <Search className="h-4 w-4 text-brand-500" />
-          <span className="text-brand-500 text-xs font-display font-medium tracking-wide uppercase">
+          <span className="text-brand-500 text-xs font-display font-semibold tracking-widest uppercase">
             Search
           </span>
         </div>
-        <h1 className="font-display font-black text-3xl md:text-5xl text-white leading-tight mb-4">
-          Find articles fast.
+
+        <h1 className="font-display font-black text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-4">
+          Find articles across all topics
         </h1>
-        <p className="text-neutral-400 text-lg leading-relaxed mb-6">
-          Search by title, excerpt, category, author, or tag.
+
+        <p className="text-neutral-400 text-lg leading-relaxed mb-8">
+          Search by title, topic, author, or keyword to discover relevant articles.
         </p>
 
-        <form action="/search" method="get" className="flex gap-2 max-w-xl">
+        {/* Search form */}
+        <form action="/search" method="get" className="flex flex-col sm:flex-row gap-3">
           <input
             name="q"
             type="search"
             defaultValue={query}
-            placeholder="Search for AI, cybersecurity, privacy..."
-            className="flex-1 px-4 py-3 rounded-full bg-surface-200 border border-white/10 text-white text-sm placeholder:text-neutral-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors"
+            placeholder="Search AI, cybersecurity, web3..."
+            className="input-field flex-1"
+            autoFocus
           />
           <button
             type="submit"
-            className="inline-flex items-center gap-2 px-5 py-3 bg-brand-500 text-surface-0 font-display font-medium text-sm rounded-full hover:bg-brand-400 transition-colors"
+            className="btn-primary !px-6"
           >
-            Search
+            <Search className="h-4 w-4" />
+            <span>Search</span>
           </button>
         </form>
       </div>
 
       {query ? (
-        <div className="mb-6 text-sm text-neutral-500">
-          {results.length} result{results.length === 1 ? "" : "s"} for “{query}”
+        <div className="mb-8">
+          <p className="text-sm text-neutral-400 font-display">
+            {results.length} result{results.length === 1 ? '' : 's'} for <span className="text-white font-semibold">"{query}"</span>
+          </p>
         </div>
       ) : null}
 
       {results.length > 0 ? (
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 auto-rows-fr">
           {results.map((article) => (
             <ArticleCard key={article.slug} article={article} />
           ))}
         </div>
       ) : (
-        <div className="rounded-2xl border border-white/5 bg-surface-200 p-8 text-neutral-400">
-          No articles matched your search. Try a broader keyword or browse a
-          category from the navigation.
+        <div className="rounded-2xl border border-white/10 bg-surface-200 p-12 text-center">
+          <Search className="h-12 w-12 text-neutral-600 mx-auto mb-4 opacity-50" />
+          <p className="text-neutral-300 font-display text-lg mb-2">
+            {query ? 'No articles found' : 'Start searching to discover articles'}
+          </p>
+          <p className="text-neutral-500 text-sm max-w-md mx-auto">
+            {query 
+              ? `Try a different search term or browse articles by category`
+              : 'Use the search above to find articles by title, topic, author, or keyword'
+            }
+          </p>
         </div>
       )}
     </section>

@@ -3,7 +3,7 @@ import { SiteConfig, Category } from "@/types";
 export const siteConfig: SiteConfig = {
   name: "Techrupt",
   description: "Breaking news and deep analysis on Tech, AI & Cybersecurity",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://techrupt.in",
   ogImage: "/images/og-default.png",
   links: {
     twitter: "https://twitter.com/techrupt",

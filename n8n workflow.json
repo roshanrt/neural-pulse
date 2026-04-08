@@ -1,0 +1,1575 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 12
+            }
+          ]
+        }
+      },
+      "id": "5f2a24d1-1a69-46c0-b808-211422bc7e61",
+      "name": "Every 12 min",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -3776,
+        4016
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const feeds = [\n  // === CYBERSECURITY ===\n  { url: 'https://thehackernews.com/feeds/posts/default', source: 'The Hacker News', category: 'cybersecurity', trust: 2 },\n  { url: 'https://news.google.com/rss/search?q=cybersecurity+vulnerability+2026&hl=en-US&gl=US&ceid=US:en', source: 'GNews Cyber', category: 'cybersecurity', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=zero+day+exploit+CVE&hl=en-US&gl=US&ceid=US:en', source: 'GNews ZeroDay', category: 'cybersecurity', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=data+breach+ransomware+2026&hl=en-US&gl=US&ceid=US:en', source: 'GNews Breach', category: 'cybersecurity', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=CISA+advisory+patch+security&hl=en-US&gl=US&ceid=US:en', source: 'GNews CISA', category: 'cybersecurity', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=APT+nation+state+cyber+attack&hl=en-US&gl=US&ceid=US:en', source: 'GNews APT', category: 'cybersecurity', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=supply+chain+attack+backdoor+malware&hl=en-US&gl=US&ceid=US:en', source: 'GNews SupplyChain', category: 'cybersecurity', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=Krebs+security+OR+Schneier+security&hl=en-US&gl=US&ceid=US:en', source: 'GNews SecBlogs', category: 'cybersecurity', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=cloud+security+misconfiguration+AWS+Azure&hl=en-US&gl=US&ceid=US:en', source: 'GNews CloudSec', category: 'cybersecurity', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=bug+bounty+vulnerability+disclosure&hl=en-US&gl=US&ceid=US:en', source: 'GNews BugBounty', category: 'cybersecurity', trust: 1 },\n\n  // === AI & ML ===\n  { url: 'https://news.google.com/rss/search?q=OpenAI+GPT+ChatGPT+2026&hl=en-US&gl=US&ceid=US:en', source: 'GNews OpenAI', category: 'ai', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=Anthropic+Claude+AI+model&hl=en-US&gl=US&ceid=US:en', source: 'GNews Claude', category: 'ai', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=Google+Gemini+AI+DeepMind&hl=en-US&gl=US&ceid=US:en', source: 'GNews Gemini', category: 'ai', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=open+source+LLM+Llama+Mistral+DeepSeek&hl=en-US&gl=US&ceid=US:en', source: 'GNews OpenLLM', category: 'ai', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=AI+regulation+safety+policy+EU+AI+Act&hl=en-US&gl=US&ceid=US:en', source: 'GNews AIPolicy', category: 'ai', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=AI+startup+funding+valuation+2026&hl=en-US&gl=US&ceid=US:en', source: 'GNews AIFunding', category: 'ai', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=AI+agent+agentic+workflow+automation&hl=en-US&gl=US&ceid=US:en', source: 'GNews AIAgent', category: 'ai', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=machine+learning+benchmark+model+release&hl=en-US&gl=US&ceid=US:en', source: 'GNews MLBench', category: 'ai', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=AI+security+LLM+vulnerability+jailbreak&hl=en-US&gl=US&ceid=US:en', source: 'GNews AISec', category: 'ai', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=enterprise+AI+adoption+copilot+productivity&hl=en-US&gl=US&ceid=US:en', source: 'GNews EntAI', category: 'ai', trust: 1 },\n\n  // === TECH NEWS ===\n  { url: 'https://news.google.com/rss/search?q=Apple+Google+Microsoft+tech+news+2026&hl=en-US&gl=US&ceid=US:en', source: 'GNews BigTech', category: 'tech-news', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=tech+layoffs+acquisition+merger+2026&hl=en-US&gl=US&ceid=US:en', source: 'GNews Layoffs', category: 'tech-news', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=smartphone+hardware+launch+chip+GPU&hl=en-US&gl=US&ceid=US:en', source: 'GNews Hardware', category: 'tech-news', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=AWS+Azure+GCP+cloud+platform+update&hl=en-US&gl=US&ceid=US:en', source: 'GNews Cloud', category: 'tech-news', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=developer+API+SDK+platform+change&hl=en-US&gl=US&ceid=US:en', source: 'GNews DevPlatform', category: 'tech-news', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=India+technology+startup+digital&hl=en-US&gl=US&ceid=US:en', source: 'GNews IndiaTech', category: 'tech-news', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=privacy+GDPR+antitrust+tech+regulation&hl=en-US&gl=US&ceid=US:en', source: 'GNews Privacy', category: 'tech-news', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=open+source+GitHub+Linux+developer&hl=en-US&gl=US&ceid=US:en', source: 'GNews OSS', category: 'tech-news', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=Nvidia+semiconductor+chip+GPU+shortage&hl=en-US&gl=US&ceid=US:en', source: 'GNews Chips', category: 'tech-news', trust: 1 },\n  { url: 'https://news.google.com/rss/search?q=electric+vehicle+EV+Tesla+tech&hl=en-US&gl=US&ceid=US:en', source: 'GNews EV', category: 'tech-news', trust: 1 }\n];\nreturn feeds.map(f => ({\n  json: {\n    feedUrl: f.url,\n    sourceName: f.source,\n    category: f.category,\n    trust: f.trust\n  }\n}));"
+      },
+      "id": "f3260282-d44b-473f-9228-c373c5f1e999",
+      "name": "Feed List",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3552,
+        4016
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{$json.feedUrl}}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "Accept",
+              "value": "application/rss+xml, application/xml, application/atom+xml, text/xml, */*"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {
+              "maxRedirects": 5
+            }
+          },
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 15000
+        }
+      },
+      "id": "32354366-1bbf-4b3c-a475-a68725a2dc3f",
+      "name": "Fetch RSS via HTTP",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -3328,
+        4016
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse RSS/Atom XML into structured items, carrying source metadata from Feed List.\nconst items = $input.all();\nconst results = [];\nconst feedErrors = [];\nconst feedListItems = $('Feed List').all();\n\nfor (let idx = 0; idx < items.length; idx++) {\n  const item = items[idx];\n  const feedMeta = feedListItems[idx]?.json || {};\n  const xml = item.json?.data || item.json?.body || '';\n  const sourceName = item.json?.sourceName || feedMeta.sourceName || 'Unknown';\n  const category = item.json?.category || feedMeta.category || 'tech-news';\n  const trust = item.json?.trust || feedMeta.trust || 1;\n\n  if (item.json?.error || item.json?.statusCode >= 400) {\n    feedErrors.push({ source: sourceName, error: String(item.json?.error || `HTTP ${item.json?.statusCode || 'error'}`).substring(0, 200) });\n    continue;\n  }\n\n  if (!xml || xml.length < 100 || xml.includes('<!DOCTYPE html')) {\n    feedErrors.push({ source: sourceName, error: 'Empty, too short, or HTML response' });\n    continue;\n  }\n\n  try {\n    const rssItemRegex = /<item[\\s>][\\s\\S]*?<\\/item>/gi;\n    const rssMatches = xml.match(rssItemRegex) || [];\n    const atomEntryRegex = /<entry[\\s>][\\s\\S]*?<\\/entry>/gi;\n    const atomMatches = xml.match(atomEntryRegex) || [];\n    const entries = rssMatches.length > 0 ? rssMatches : atomMatches;\n    const isAtom = rssMatches.length === 0 && atomMatches.length > 0;\n\n    if (entries.length === 0) {\n      feedErrors.push({ source: sourceName, error: 'No <item> or <entry> tags found' });\n      continue;\n    }\n\n    for (const entry of entries) {\n      function getTag(tag) {\n        const cdataRegex = new RegExp(`<${tag}[^>]*>\\s*<!\\[CDATA\\[([\\s\\S]*?)\\]\\]>\\s*<\\/${tag}>`, 'i');\n        const cdataMatch = entry.match(cdataRegex);\n        if (cdataMatch) return cdataMatch[1].trim();\n        const regex = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, 'i');\n        const match = entry.match(regex);\n        return match ? match[1].trim() : '';\n      }\n\n      let title = getTag('title').replace(/<[^>]+>/g, '').trim();\n      let link = '';\n      if (isAtom) {\n        const linkMatch = entry.match(/<link[^>]*rel=[\"']alternate[\"'][^>]*href=[\"']([^\"']+)[\"']/i)\n          || entry.match(/<link[^>]*href=[\"']([^\"']+)[\"']/i);\n        link = linkMatch ? linkMatch[1] : '';\n      } else {\n        link = getTag('link');\n      }\n      const guid = getTag('guid') || getTag('id');\n      const pubDateStr = getTag('pubDate') || getTag('published') || getTag('updated') || getTag('dc:date');\n      let snippet = getTag('description') || getTag('summary') || getTag('content:encoded') || getTag('content');\n      snippet = snippet.replace(/<[^>]+>/g, ' ').replace(/\\s+/g, ' ').trim();\n\n      if (!title || (!link && !guid)) continue;\n\n      results.push({\n        json: {\n          title,\n          link: link || guid,\n          guid: guid || link,\n          pubDate: pubDateStr,\n          contentSnippet: snippet.substring(0, 500),\n          sourceName,\n          category,\n          trust\n        }\n      });\n    }\n  } catch (parseError) {\n    feedErrors.push({ source: sourceName, error: String(parseError).substring(0, 200) });\n  }\n}\n\nif (feedErrors.length > 0) {\n  console.log('Feed errors:', JSON.stringify(feedErrors));\n}\n\nif (results.length === 0) {\n  return [{ json: { _noData: true, feedErrors, message: 'No items parsed from any feed' } }];\n}\n\nreturn results;"
+      },
+      "id": "6a1a74ce-7533-4320-a5d9-2323a288e20f",
+      "name": "Parse RSS + Tag Source",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3104,
+        4016
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const crypto = require('crypto');\nconst items = $input.all();\nconst results = [];\n\nconst diag = {\n  totalInput: items.length,\n  noUrlOrTitle: 0,\n  olderThanMax: 0,\n  passedTimeFilter: 0,\n  afterDedup: 0,\n  finalOutput: 0,\n  sourceBreakdown: {},\n  categoryBreakdown: {}\n};\n\nif (items.length === 1 && items[0].json._noData) {\n  return [{ json: { _skip: true, message: 'No feed data available' } }];\n}\n\nfunction normalizeUrl(urlStr) {\n  try {\n    const parsed = new URL(urlStr);\n    const params = new URLSearchParams(parsed.search);\n    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'utm_name'].forEach(k => params.delete(k));\n    const sorted = [...params.entries()].sort((a, b) => a[0].localeCompare(b[0]));\n    const q = sorted.length ? '?' + sorted.map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join('&') : '';\n    const hasCustomPort = parsed.port && !((parsed.protocol === 'http:' && parsed.port === '80') || (parsed.protocol === 'https:' && parsed.port === '443'));\n    const port = hasCustomPort ? `:${parsed.port}` : '';\n    const path = (parsed.pathname || '/').replace(/\\/+$/, '') || '/';\n    return `${parsed.protocol}//${parsed.hostname.toLowerCase()}${port}${path}${q}`;\n  } catch (error) {\n    return (urlStr || '').trim();\n  }\n}\n\n// ============================================================\n// CONFIG\n// ============================================================\nconst MAX_AGE_HOURS = 168;       // 7 days for weekly publishers\nconst MAX_RESULTS = 40;          // Increased for 3-lane coverage\nconst SIMILARITY_THRESHOLD = 0.45;\n// ============================================================\n\n// === CATEGORY-SPECIFIC SCORING ===\nconst CYBER_KEYWORDS = [\n  { pattern: /cve-\\d{4}-\\d+/, score: 3 },\n  { pattern: /zero-day|0-day|rce|remote code execution/, score: 3 },\n  { pattern: /exploit|poc|proof of concept/, score: 2 },\n  { pattern: /ransomware|breach|data leak|data exposure/, score: 2 },\n  { pattern: /critical|urgent|actively exploited|in the wild/, score: 3 },\n  { pattern: /apt|nation.state|state.sponsored/, score: 2 },\n  { pattern: /supply.chain|backdoor|trojan/, score: 2 },\n  { pattern: /patch tuesday|security update|advisory/, score: 1 },\n  { pattern: /cisa|nsa|fbi.*(warn|advisory|alert)/, score: 2 },\n  { pattern: /vulnerability disclosure|bug bounty/, score: 1 }\n];\n\nconst AI_KEYWORDS = [\n  { pattern: /\\bai\\b|\\bml\\b|machine learning|deep learning/, score: 1 },\n  { pattern: /llm|large language model|foundation model/, score: 2 },\n  { pattern: /gpt|gemini|claude|copilot|llama|mistral|deepseek|phi-4/, score: 2 },\n  { pattern: /open.?source.*(model|weight)|hugging.?face/, score: 2 },\n  { pattern: /ai.*(regulation|policy|executive.order|eu.ai.act|safety)/, score: 3 },\n  { pattern: /agi|artificial.general|frontier.model/, score: 2 },\n  { pattern: /benchmark|eval|mmlu|humaneval|arena/, score: 1 },\n  { pattern: /fine.?tun|rlhf|rl.?from|alignment|red.?team/, score: 2 },\n  { pattern: /diffusion|stable.?diffusion|midjourney|dall-?e|sora|video.gen/, score: 1 },\n  { pattern: /transformer|attention.mechanism|moe|mixture.of.expert/, score: 1 },\n  { pattern: /ai.*(funding|raise|valuation|ipo|acquisition)/, score: 2 },\n  { pattern: /enterprise.ai|ai.agent|agentic/, score: 2 }\n];\n\nconst TECH_KEYWORDS = [\n  { pattern: /layoff|restructur|workforce.reduction/, score: 2 },\n  { pattern: /acqui|merger|buyout|ipo/, score: 2 },\n  { pattern: /apple|google|meta|microsoft|amazon|nvidia/, score: 1 },\n  { pattern: /android|ios|iphone|pixel|galaxy/, score: 1 },\n  { pattern: /cloud|aws|azure|gcp|kubernetes/, score: 1 },\n  { pattern: /developer|api.change|sdk|platform.update/, score: 1 },\n  { pattern: /chip|semiconductor|gpu|tpu|processor/, score: 2 },\n  { pattern: /open.?source|github|linux|kernel/, score: 1 },\n  { pattern: /india.*(tech|startup|digital|policy)/, score: 2 },\n  { pattern: /privacy|gdpr|dma|antitrust/, score: 1 }\n];\n\n// === SOURCE TRUST + WEIGHT ===\nconst sourceWeight = {\n  'Krebs on Security': 4,\n  'Schneier on Security': 4,\n  'CISA': 5,\n  'BleepingComputer': 3,\n  'Dark Reading': 3,\n  'SecurityWeek': 3,\n  'CyberScoop': 3,\n  'The Hacker News': 2,\n  'MIT Tech Review': 4,\n  'AI Snake Oil': 4,\n  'Simon Willison': 4,\n  'Google AI Blog': 4,\n  'OpenAI Blog': 4,\n  'Wired AI': 3,\n  'The Verge AI': 2,\n  'Ars Technica': 3,\n  'TechCrunch': 3,\n  'The Verge': 3,\n  'The Next Web': 2,\n  '9to5Google': 2,\n  'Google News': 1\n};\n\nfor (const item of items) {\n  const url = item.json.link || item.json.guid || '';\n  const title = item.json.title || '';\n  if (!url || !title) { diag.noUrlOrTitle++; continue; }\n\n  const normalizedUrl = normalizeUrl(url);\n  const hash = crypto.createHash('sha256').update(normalizedUrl).digest('hex');\n\n  let pubDate;\n  const rawDate = item.json.pubDate || item.json.isoDate || '';\n  if (rawDate) {\n    pubDate = new Date(rawDate);\n    if (isNaN(pubDate.getTime())) pubDate = new Date();\n  } else {\n    pubDate = new Date();\n  }\n\n  const hoursSince = (Date.now() - pubDate.getTime()) / (1000 * 60 * 60);\n  if (hoursSince > MAX_AGE_HOURS) { diag.olderThanMax++; continue; }\n  diag.passedTimeFilter++;\n\n  const text = (title + ' ' + (item.json.contentSnippet || '')).toLowerCase();\n  const category = item.json.category || 'tech-news';\n  const sourceName = item.json.sourceName || 'Unknown';\n  const trust = item.json.trust || 1;\n\n  // Base score from source weight\n  let score = sourceWeight[sourceName] || 1;\n\n  // Category-specific keyword scoring\n  const keywordSets = {\n    'cybersecurity': CYBER_KEYWORDS,\n    'ai': AI_KEYWORDS,\n    'tech-news': TECH_KEYWORDS\n  };\n  // Score from own category keywords (full weight)\n  const ownKeywords = keywordSets[category] || TECH_KEYWORDS;\n  for (const kw of ownKeywords) {\n    if (kw.pattern.test(text)) score += kw.score;\n  }\n  // Bonus: cross-category signals at half weight (e.g. AI + security overlap)\n  for (const [cat, keywords] of Object.entries(keywordSets)) {\n    if (cat === category) continue;\n    for (const kw of keywords) {\n      if (kw.pattern.test(text)) score += Math.ceil(kw.score * 0.3);\n    }\n  }\n\n  // Trust bonus\n  if (trust >= 4) score += 2;\n  else if (trust >= 3) score += 1;\n\n  // Recency boost\n  if (hoursSince < 3) score += 3;\n  else if (hoursSince < 6) score += 2;\n  else if (hoursSince < 12) score += 1;\n\n  // Recency decay for non-breaking after 24h\n  if (hoursSince > 24) score -= 1;\n  if (hoursSince > 48) score -= 1;\n\n  // Track\n  diag.sourceBreakdown[sourceName] = (diag.sourceBreakdown[sourceName] || 0) + 1;\n  diag.categoryBreakdown[category] = (diag.categoryBreakdown[category] || 0) + 1;\n\n  results.push({\n    json: {\n      hash,\n      title: title.trim(),\n      url,\n      normalizedUrl,\n      source: sourceName,\n      category,\n      trust,\n      excerpt: (item.json.contentSnippet || '').substring(0, 500),\n      publishedAt: pubDate.toISOString(),\n      hoursSince: Math.round(hoursSince),\n      score,\n      isHighPriority: false // set downstream per category\n    }\n  });\n}\n\nif (results.length === 0) {\n  return [{ json: { _skip: true, message: 'No articles after scoring', diagnostics: diag } }];\n}\n\nresults.sort((a, b) => b.json.score - a.json.score);\n\n// === Dedup via trigram clustering ===\nfunction trigrams(str) {\n  const s = str.toLowerCase().replace(/[^a-z0-9 ]/g, '').trim();\n  const set = new Set();\n  for (let i = 0; i <= s.length - 3; i++) set.add(s.substring(i, i + 3));\n  return set;\n}\nfunction similarity(a, b) {\n  const tA = trigrams(a);\n  const tB = trigrams(b);\n  let overlap = 0;\n  for (const t of tA) if (tB.has(t)) overlap++;\n  return overlap / Math.max(tA.size, tB.size, 1);\n}\n\nconst clusters = [];\nfor (const item of results) {\n  let merged = false;\n  for (const cluster of clusters) {\n    if (similarity(item.json.title, cluster[0].json.title) > SIMILARITY_THRESHOLD) {\n      cluster.push(item);\n      merged = true;\n      break;\n    }\n  }\n  if (!merged) clusters.push([item]);\n}\n\nconst deduped = clusters.map(cluster => {\n  cluster.sort((a, b) => b.json.score - a.json.score);\n  const best = { ...cluster[0] };\n  best.json = { ...best.json };\n  best.json.sourceCount = cluster.length;\n  best.json.allSources = [...new Set(cluster.map(c => c.json.source))].join(', ');\n  if (cluster.length >= 3) {\n    best.json.score += 3;\n    best.json.isBreaking = true;\n  } else if (cluster.length >= 2) {\n    best.json.score += 1;\n    best.json.isBreaking = false;\n  } else {\n    best.json.isBreaking = false;\n  }\n  return best;\n});\n\ndeduped.sort((a, b) => b.json.score - a.json.score);\ndiag.afterDedup = deduped.length;\ndiag.finalOutput = deduped.length;\n\nif (deduped.length > 0) {\n  deduped[0].json._diagnostics = diag;\n}\n\nreturn deduped;"
+      },
+      "id": "dbe878c0-681d-4951-83b3-3f62a70763b4",
+      "name": "Dedup Score and Cluster",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2880,
+        4016
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================================\n// CATEGORY BALANCING GATE\n// Enforces per-category quotas so one niche doesn't dominate.\n// Runs AFTER dedup, BEFORE Notion hash check.\n// ============================================================\n\nconst items = $input.all();\n\nif (items.length === 1 && (items[0].json._skip || items[0].json._noData)) {\n  return items;\n}\n\n// === QUOTAS (per cycle) ===\nconst QUOTAS = {\n  'cybersecurity': { target: 10, max: 14, highThreshold: 6 },\n  'ai':            { target: 8,  max: 12, highThreshold: 5 },\n  'tech-news':     { target: 8,  max: 12, highThreshold: 4 }\n};\nconst TOTAL_CAP = 30;\n\n// Group by category\nconst buckets = {};\nfor (const item of items) {\n  const cat = item.json.category || 'tech-news';\n  if (!buckets[cat]) buckets[cat] = [];\n  buckets[cat].push(item);\n}\n\n// Sort each bucket by score desc\nfor (const cat of Object.keys(buckets)) {\n  buckets[cat].sort((a, b) => b.json.score - a.json.score);\n}\n\n// Pass 1: Fill up to target per category\nconst selected = [];\nconst selectedByCategory = {};\n\nfor (const [cat, config] of Object.entries(QUOTAS)) {\n  const available = buckets[cat] || [];\n  const take = Math.min(available.length, config.target);\n  for (let i = 0; i < take; i++) {\n    // Apply category-specific high-priority threshold\n    available[i].json.isHighPriority = available[i].json.score >= config.highThreshold;\n    selected.push(available[i]);\n  }\n  selectedByCategory[cat] = take;\n}\n\n// Pass 2: If under TOTAL_CAP, fill remaining slots from any category up to max\nif (selected.length < TOTAL_CAP) {\n  const remaining = TOTAL_CAP - selected.length;\n  const selectedHashes = new Set(selected.map(s => s.json.hash));\n  const extras = [];\n\n  for (const [cat, config] of Object.entries(QUOTAS)) {\n    const available = buckets[cat] || [];\n    const alreadyTaken = selectedByCategory[cat] || 0;\n    const canTakeMore = config.max - alreadyTaken;\n    for (let i = alreadyTaken; i < alreadyTaken + canTakeMore && i < available.length; i++) {\n      if (!selectedHashes.has(available[i].json.hash)) {\n        available[i].json.isHighPriority = available[i].json.score >= config.highThreshold;\n        extras.push(available[i]);\n      }\n    }\n  }\n\n  // Sort extras by score and take what fits\n  extras.sort((a, b) => b.json.score - a.json.score);\n  for (let i = 0; i < Math.min(extras.length, remaining); i++) {\n    selected.push(extras[i]);\n  }\n}\n\n// Final sort by score\nselected.sort((a, b) => b.json.score - a.json.score);\n\n// Log balance diagnostics\nconst balanceLog = {};\nfor (const item of selected) {\n  const cat = item.json.category;\n  balanceLog[cat] = (balanceLog[cat] || 0) + 1;\n}\nconsole.log('=== CATEGORY BALANCE ===', JSON.stringify(balanceLog));\n\nif (selected.length > 0) {\n  selected[0].json._balanceDiag = balanceLog;\n}\n\nreturn selected.length > 0 ? selected : [{ json: { _skip: true, message: 'No articles after category balancing' } }];"
+      },
+      "id": "5d7e1f54-cb98-446c-854f-b87634de8eaf",
+      "name": "Category Balance Gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2656,
+        4016
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/databases/33a498f5eea880ea91ade7c84a685e6f/query",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "notionApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"filter\": {\n    \"property\": \"Hash\",\n    \"rich_text\": {\n      \"is_not_empty\": true\n    }\n  },\n  \"page_size\": 100\n}",
+        "options": {}
+      },
+      "id": "c9721f6d-3758-4d91-9f07-fd902dd3b63c",
+      "name": "Fetch Existing Hashes",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2432,
+        4016
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "5Yz8lFQRs70XmAzf",
+          "name": "Notion account 2"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/databases/33a498f5eea880ea91ade7c84a685e6f/query",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "notionApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ (() => {\n  const first = $('Fetch Existing Hashes').first().json || {};\n  const body = {\n    filter: {\n      property: 'Hash',\n      rich_text: { is_not_empty: true }\n    },\n    page_size: 100\n  };\n  if (first.next_cursor) body.start_cursor = first.next_cursor;\n  return body;\n})() }}",
+        "options": {}
+      },
+      "id": "6c521bd4-6702-4f3e-b19e-0f6fc8632196",
+      "name": "Fetch Existing Hashes Page 2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2208,
+        4016
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "5Yz8lFQRs70XmAzf",
+          "name": "Notion account 2"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const page1 = $('Fetch Existing Hashes').first().json?.results || [];\nconst page2 = $('Fetch Existing Hashes Page 2').first().json?.results || [];\nconst existingHashes = new Set();\n\nfor (const page of [...page1, ...page2]) {\n  const h = page.properties?.Hash?.rich_text?.[0]?.plain_text;\n  if (h) existingHashes.add(h);\n}\n\nconst scored = $('Category Balance Gate').all();\nconst newItems = scored.filter(item => !item.json._skip && !existingHashes.has(item.json.hash));\n\nif (newItems.length === 0) {\n  return [{ json: { _skip: true, message: 'No new articles' } }];\n}\n\nreturn newItems;"
+      },
+      "id": "87c96e07-bc46-435a-9c6b-451f8982bd1d",
+      "name": "Filter Already Published",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1984,
+        4016
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$json._skip}}",
+              "operation": "notEqual",
+              "value2": true
+            },
+            {
+              "value1": "={{$json.isHighPriority}}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "223f9cf0-3aef-4dc5-96e5-53d5518d590e",
+      "name": "High Priority Gate",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -1760,
+        4016
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================================\n// CATEGORY-SPECIFIC PROMPT BUILDER\n// Selects the right editorial prompt based on article category.\n// ============================================================\n\nconst item = $json;\nconst category = (item.category || 'tech-news').toLowerCase();\n\nconst PROMPTS = {\n  cybersecurity: `You are a senior cybersecurity journalist at TechRupt.me with 7+ years of offensive security experience.\n\nWrite a 500-700 word news article. Follow this EXACT output format:\n\nLine 1: The article headline only (60-70 chars, SEO-optimized, include primary keyword). Do NOT prefix it with any label like HEADLINE or ##.\n\nLine 3 onward: Write the full article directly. Start with a 2-sentence lead paragraph (WHO, WHAT, WHEN, most impactful fact first). Then 3-4 body paragraphs covering: technical details, impact and scale, context, vendor response.\n\nInclude a paragraph that starts with exactly: From a practitioner perspective — then add real offensive security insight about detection or exploitation nuance.\n\nEnd the article with a section titled What To Do containing 2-3 actionable bullet points.\n\nAfter the article body, add these metadata lines (each on its own line):\nMETA: (under 155 chars, for SEO description)\nTAGS: (5-7 lowercase keywords, comma-separated)\nSLUG: (url-friendly, under 60 chars)\nCATEGORY: cybersecurity\n\nCRITICAL RULES:\n- Do NOT output section labels like HEADLINE, LEAD, BODY. Just write the content directly.\n- No hype words (groundbreaking, devastating, shocking).\n- No filler phrases (it is worth noting, it goes without saying).\n- No passive voice in the lead paragraph.\n- Use specific numbers, software versions, CVE IDs when available.\n- Write for a technical audience.`,\n\n  ai: `You are a senior AI/ML technology journalist at TechRupt.me who understands both the research and business sides of artificial intelligence.\n\nWrite a 500-700 word news article. Follow this EXACT output format:\n\nLine 1: The article headline only (60-70 chars, SEO-optimized, include primary keyword). Do NOT prefix it with any label.\n\nLine 3 onward: Write the full article directly. Start with a 2-sentence lead paragraph (WHO, WHAT, WHEN, most impactful fact first). Then 3-4 body paragraphs covering: what changed technically, benchmark or capability claims with skepticism where warranted, industry/market impact, safety or regulatory implications.\n\nInclude a paragraph that starts with exactly: Why it matters — then explain the real-world significance for practitioners and businesses.\n\nEnd the article with a section titled Key Takeaways containing 2-3 bullet points.\n\nAfter the article body, add these metadata lines:\nMETA: (under 155 chars, for SEO description)\nTAGS: (5-7 lowercase keywords, comma-separated)\nSLUG: (url-friendly, under 60 chars)\nCATEGORY: ai\n\nCRITICAL RULES:\n- Do NOT output section labels like HEADLINE, LEAD, BODY.\n- No hype words (revolutionary, game-changing, unprecedented).\n- Always question benchmark claims; note methodology gaps.\n- Mention model size, training data, or architecture details when known.\n- Write for a technical audience that can distinguish real breakthroughs from marketing.\n- Include specific numbers: parameters, scores, funding amounts, dates.`,\n\n  'tech-news': `You are a senior technology journalist at TechRupt.me covering the intersection of platforms, hardware, policy, and developer ecosystems.\n\nWrite a 500-700 word news article. Follow this EXACT output format:\n\nLine 1: The article headline only (60-70 chars, SEO-optimized). Do NOT prefix it with any label.\n\nLine 3 onward: Write the full article directly. Start with a 2-sentence lead paragraph (WHO, WHAT, WHEN, most impactful fact first). Then 3-4 body paragraphs covering: what changed, who is affected, competitive/market context, what comes next.\n\nInclude a paragraph that starts with exactly: The bigger picture — then connect this story to a larger industry trend.\n\nEnd the article with a section titled What To Watch containing 2-3 forward-looking bullet points.\n\nAfter the article body, add these metadata lines:\nMETA: (under 155 chars, for SEO description)\nTAGS: (5-7 lowercase keywords, comma-separated)\nSLUG: (url-friendly, under 60 chars)\nCATEGORY: tech-news\n\nCRITICAL RULES:\n- Do NOT output section labels.\n- No hype words.\n- No filler phrases.\n- Use specific numbers, dates, product versions.\n- Write for a technical audience.\n- Include Indian tech context when relevant.`\n};\n\nconst systemPrompt = PROMPTS[category] || PROMPTS['tech-news'];\n\nconst userPrompt = `Write a TechRupt article about:\n\nTitle: ${item.title}\nExcerpt: ${item.excerpt}\nSource: ${item.source}\nCategory: ${item.category}\nCovered by: ${item.allSources || item.source}\nBreaking: ${item.isBreaking}`;\n\nreturn [{\n  json: {\n    ...item,\n    _systemPrompt: systemPrompt,\n    _userPrompt: userPrompt\n  }\n}];"
+      },
+      "id": "192c4c7e-56af-414a-ae36-7b9fc4bbdd37",
+      "name": "Build Category Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1536,
+        3920
+      ],
+      "executeOnce": false,
+      "retryOnFail": false,
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"openai/gpt-oss-120b\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": {{ JSON.stringify($json._systemPrompt) }}\n    },\n    {\n      \"role\": \"user\",\n      \"content\": {{ JSON.stringify($json._userPrompt) }}\n    }\n  ],\n  \"max_tokens\": 1500,\n  \"temperature\": 0.6\n}",
+        "options": {}
+      },
+      "id": "4df31f6c-34cd-4a6a-8590-9a71ae9daa9e",
+      "name": "AI Draft News",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -1312,
+        3920
+      ],
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "ww21NQ6AA4g8mHSb",
+          "name": "Bearer Auth account 2"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const allInputs = $input.all();\nconst upstream = $('Build Category Prompt').all();\nconst outputs = [];\n\nconst LABEL_REGEX = /^(\\*\\*)?\\s*(headline|lead|body|intro|expert\\s*take|what\\s*to\\s*do|what\\s*to\\s*watch|key\\s*takeaways|why\\s*it\\s*matters|the\\s*bigger\\s*picture|meta|tags|slug|category)\\s*(\\*\\*)?\\s*[:()]?\\s*(\\*\\*)?$/i;\nconst CHAR_COUNT_REGEX = /^.*\\(\\d+\\s*chars?\\).*$/i;\n\nfunction extractTitle(text) {\n  const lines = text.split('\\n').filter(l => l.trim());\n  for (const line of lines) {\n    const cleaned = line.replace(/\\*\\*/g, '').replace(/^#+\\s*/, '').trim();\n    if (LABEL_REGEX.test(cleaned)) continue;\n    if (CHAR_COUNT_REGEX.test(cleaned)) continue;\n    if (cleaned.length < 15) continue;\n    if (/^(meta|tags|slug|category):/i.test(cleaned)) continue;\n    return cleaned.substring(0, 200);\n  }\n  return null;\n}\n\nfunction stripTitleFromBody(bodyText, title) {\n  if (!title) return bodyText;\n  const lines = bodyText.split('\\n');\n  return lines.filter(l => {\n    const cleaned = l.replace(/\\*\\*/g, '').replace(/^#+\\s*/, '').trim();\n    return cleaned !== title;\n  }).join('\\n').trim();\n}\n\nfor (let idx = 0; idx < allInputs.length; idx++) {\n  const groqResponse = allInputs[idx].json || {};\n  const raw = groqResponse?.choices?.[0]?.message?.content || '';\n\n  const body = raw\n    .replace(/^META:.+$/gim, '')\n    .replace(/^TAGS:.+$/gim, '')\n    .replace(/^SLUG:.+$/gim, '')\n    .replace(/^CATEGORY:.+$/gim, '')\n    .trim();\n\n  const tagsMatch = raw.match(/TAGS:\\s*(.+)/i);\n  const tags = tagsMatch ? tagsMatch[1].trim() : '';\n  const slugMatch = raw.match(/SLUG:\\s*(.+)/i);\n  const slug = slugMatch ? slugMatch[1].trim() : '';\n  const catMatch = raw.match(/CATEGORY:\\s*(.+)/i);\n  const aiCategory = catMatch ? catMatch[1].trim() : '';\n\n  const prev = upstream[idx]?.json || upstream[0]?.json || {};\n  const aiTitle = extractTitle(raw);\n  const hasUsableAiBody = body.length >= 180;\n  const cleanBody = aiTitle ? stripTitleFromBody(body, aiTitle) : body;\n\n  // === ANTI-HALLUCINATION CHECK ===\n  const hasConcreteData = /\\d{4}|CVE-|\\d+\\.\\d+|\\$\\d|%|v\\d/.test(cleanBody);\n  const hasSourceUrl = prev.url && prev.url.startsWith('http');\n  const passesFactCheck = hasConcreteData && hasSourceUrl;\n\n  const fallbackBody = [\n    `Lead: ${prev.title || 'Update'}`,\n    '',\n    (prev.excerpt || 'Fallback draft. AI returned empty or low-quality response.').trim(),\n    '',\n    `Source: ${prev.source || 'Unknown'}`,\n    `URL: ${prev.url || 'N/A'}`,\n    `Signals: score=${prev.score || 0}, breaking=${Boolean(prev.isBreaking)}`\n  ].join('\\n');\n\n  outputs.push({\n    json: {\n      title: aiTitle || prev.title || 'Untitled',\n      bodySafe: (hasUsableAiBody && passesFactCheck) ? cleanBody : fallbackBody,\n      tags: tags || prev.category || '',\n      slug: slug || '',\n      category: aiCategory || prev.category || 'tech-news',\n      sourceUrl: prev.url || '',\n      hash: prev.hash || '',\n      source: prev.source || '',\n      score: prev.score || 0,\n      isBreaking: prev.isBreaking || false,\n      allSources: prev.allSources || prev.source || '',\n      aiFallbackUsed: !(hasUsableAiBody && passesFactCheck)\n    }\n  });\n}\n\nreturn outputs;"
+      },
+      "id": "e91a754c-2f2d-499e-92a7-d9f765490676",
+      "name": "Parse AI Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1088,
+        3920
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function parseRichText(text) {\n  const parts = [];\n  const regex = /\\*\\*(.+?)\\*\\*/g;\n  let lastIndex = 0;\n  let match;\n  while ((match = regex.exec(text)) !== null) {\n    if (match.index > lastIndex) {\n      parts.push({ type: 'text', text: { content: text.slice(lastIndex, match.index).substring(0, 2000) } });\n    }\n    parts.push({ type: 'text', text: { content: match[1].substring(0, 2000) }, annotations: { bold: true } });\n    lastIndex = regex.lastIndex;\n  }\n  if (lastIndex < text.length) {\n    parts.push({ type: 'text', text: { content: text.slice(lastIndex).substring(0, 2000) } });\n  }\n  return parts.length ? parts : [{ type: 'text', text: { content: text.substring(0, 2000) } }];\n}\n\nfunction buildBlocks(bodyText) {\n  const lines = bodyText.split('\\n');\n  const blocks = [];\n  for (const line of lines) {\n    const trimmed = line.trim();\n    if (!trimmed) continue;\n    if (trimmed.startsWith('## ')) {\n      blocks.push({ object: 'block', type: 'heading_2', heading_2: { rich_text: parseRichText(trimmed.slice(3).trim()) } });\n    } else if (trimmed.startsWith('### ')) {\n      blocks.push({ object: 'block', type: 'heading_3', heading_3: { rich_text: parseRichText(trimmed.slice(4).trim()) } });\n    } else if (/^[-*]\\s+/.test(trimmed)) {\n      blocks.push({ object: 'block', type: 'bulleted_list_item', bulleted_list_item: { rich_text: parseRichText(trimmed.replace(/^[-*]\\s+/, '')) } });\n    } else if (/^\\d+\\.\\s+/.test(trimmed)) {\n      blocks.push({ object: 'block', type: 'numbered_list_item', numbered_list_item: { rich_text: parseRichText(trimmed.replace(/^\\d+\\.\\s+/, '')) } });\n    } else {\n      const chunks = trimmed.match(/.{1,2000}/gs) || [trimmed];\n      for (const chunk of chunks) {\n        blocks.push({ object: 'block', type: 'paragraph', paragraph: { rich_text: parseRichText(chunk) } });\n      }\n    }\n  }\n  return blocks.length ? blocks : [{ object: 'block', type: 'paragraph', paragraph: { rich_text: [{ type: 'text', text: { content: 'Draft body unavailable. Please regenerate.' } }] } }];\n}\n\nconst title = ($json.title || 'Untitled').substring(0, 2000);\nconst children = buildBlocks($json.bodySafe || '');\n\nconst statusName = $json.aiFallbackUsed ? 'Failed'\n  : $json.isBreaking ? 'Ready'\n  : 'Draft';\n\nreturn [{\n  json: {\n    notionPayload: {\n      parent: { database_id: '33a498f5eea880ea91ade7c84a685e6f' },\n      properties: {\n        'Sr.No': { title: [{ text: { content: title } }] },\n        Title: { rich_text: [{ text: { content: title } }] },\n        Status: { select: { name: statusName } },\n        Type: { select: { name: 'rapid-news' } },\n        Category: { select: { name: $json.category } },\n        Source: { url: $json.sourceUrl },\n        Tags: { rich_text: [{ text: { content: $json.tags || '' } }] },\n        Hash: { rich_text: [{ text: { content: $json.hash || '' } }] }\n      },\n      children\n    }\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -864,
+        3920
+      ],
+      "id": "8b5f1171-dad4-499d-b98f-d04bcfb2582f",
+      "name": "Build Notion Payload"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/pages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "notionApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{$json.notionPayload}}",
+        "options": {}
+      },
+      "id": "0397ccda-0d27-4331-8727-015700896818",
+      "name": "Create Notion Draft",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -640,
+        3920
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "5Yz8lFQRs70XmAzf",
+          "name": "Notion account 2"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "if ($json._skip) {\n  return [{ json: { _skipped: true, message: 'Nothing to save' } }];\n}\nreturn [{ json: $json }];"
+      },
+      "id": "766dc6e4-3441-4d58-a8de-1f93acca5800",
+      "name": "Roundup Guard",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1088,
+        4112
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$json._skipped}}",
+              "operation": "notEqual",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "98d341aa-ddfb-4be4-8b35-546f11d78f42",
+      "name": "Has Real Article?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -864,
+        4112
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/pages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "notionApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"parent\": { \"database_id\": \"33a498f5eea880ea91ade7c84a685e6f\" },\n  \"properties\": {\n    \"Sr.No\": {\n      \"title\": [{ \"text\": { \"content\": \"{{ ($json.title || 'Untitled').substring(0, 2000) }}\" } }]\n    },\n    \"Source\": {\n      \"url\": \"{{ $json.url }}\"\n    },\n    \"Title\": {\n      \"rich_text\": [{ \"text\": { \"content\": \"{{ ($json.title || 'Untitled').substring(0, 2000) }}\" } }]\n    },\n    \"Category\": {\n      \"select\": { \"name\": \"{{ $json.category || 'tech-news' }}\" }\n    },\n    \"Status\": {\n      \"select\": { \"name\": \"Draft\" }\n    },\n    \"Type\": {\n      \"select\": { \"name\": \"rapid-news\" }\n    },\n    \"Hash\": {\n      \"rich_text\": [{ \"text\": { \"content\": \"{{ $json.hash }}\" } }]\n    }\n  },\n  \"children\": [\n    {\n      \"object\": \"block\",\n      \"type\": \"paragraph\",\n      \"paragraph\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": \"{{ (($json.excerpt || 'Roundup placeholder.').substring(0, 1800)) }}\"\n            }\n          }\n        ]\n      }\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "6b0cd905-b67f-42d0-925f-55c9323fa48d",
+      "name": "Save to Roundup DB",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -640,
+        4112
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "5Yz8lFQRs70XmAzf",
+          "name": "Notion account 2"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 6 * * *"
+            }
+          ]
+        }
+      },
+      "id": "e1c9a026-3708-4079-952a-2a8fb5b2836d",
+      "name": "Every day 6 AM",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -2880,
+        4528
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://services.nvd.nist.gov/rest/json/cves/2.0?pubStartDate={{ new Date(Date.now() - 86400000).toISOString() }}&pubEndDate={{ new Date().toISOString() }}&cvssV3Severity=HIGH&resultsPerPage=20",
+        "options": {}
+      },
+      "id": "c18cbb27-9497-415e-a9c2-6cd46565fe7d",
+      "name": "Fetch new CVEs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2656,
+        4528
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\nconst vulns = data.vulnerabilities || [];\n\nif (vulns.length === 0) {\n  return [{ json: { _skip: true, error: 'No CVEs found', totalResults: data.totalResults || 0 } }];\n}\n\nconst parsed = vulns.map(v => {\n  const cve = v.cve || {};\n  const metrics = cve.metrics || {};\n  const cvss = metrics.cvssMetricV31?.[0]?.cvssData || metrics.cvssMetricV30?.[0]?.cvssData || null;\n  const desc = (cve.descriptions || []).find(d => d.lang === 'en');\n  return {\n    id: cve.id || 'UNKNOWN',\n    description: desc ? desc.value.substring(0, 600) : 'No description',\n    cvssScore: cvss ? cvss.baseScore : 0,\n    severity: cvss && cvss.baseScore >= 9 ? 'CRITICAL' : 'HIGH',\n    attackVector: cvss ? cvss.attackVector : 'UNKNOWN',\n    published: cve.published || ''\n  };\n}).filter(c => c.cvssScore >= 7);\n\nif (parsed.length === 0) {\n  return [{ json: { _skip: true, error: 'No high-severity CVEs' } }];\n}\n\nparsed.sort((a, b) => b.cvssScore - a.cvssScore);\n// Return top 3 instead of just 1\nreturn parsed.slice(0, 3).map(c => ({ json: { ...c, _skip: false } }));"
+      },
+      "id": "a907380b-d5ff-4af4-9696-f82e91f62f68",
+      "name": "Parse CVE list",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2432,
+        4528
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$json._skip}}",
+              "operation": "notEqual",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "9e1929fe-238b-42d2-a248-04a07284158f",
+      "name": "Has CVEs?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -2208,
+        4528
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.first.org/data/v1/epss?cve={{$json.id}}",
+        "options": {}
+      },
+      "id": "1d086ee7-c840-41f9-bcea-ee61af86a123",
+      "name": "Fetch EPSS Score",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1984,
+        4528
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const epssResponse = $input.first().json;\nconst epssData = epssResponse?.data?.[0] || {};\nconst epssScore = parseFloat(epssData.epss || '0');\nconst epssPercentile = parseFloat(epssData.percentile || '0');\n\nconst idx = $itemIndex || 0;\nconst cveItems = $('Has CVEs?').all();\nconst cve = cveItems[idx]?.json || cveItems[0]?.json || {};\n\nconst cvssScore = Number(cve.cvssScore || 0);\nconst keep = cvssScore >= 9 || epssScore >= 0.05;\n\nreturn [{\n  json: {\n    ...cve,\n    epssScore,\n    epssPercentile,\n    epssLabel: epssScore >= 0.5 ? 'ACTIVELY_TARGETED'\n      : epssScore >= 0.1 ? 'HIGH_RISK'\n      : epssScore >= 0.05 ? 'MODERATE'\n      : 'LOW_EXPLOIT_PROB',\n    _skip: !keep\n  }\n}];"
+      },
+      "id": "09552d12-5495-4460-a76b-8339786046c1",
+      "name": "Merge EPSS + Filter",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1760,
+        4528
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$json._skip}}",
+              "operation": "notEqual",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "429fc889-f9b3-4a39-b3a3-ee4bb86caacd",
+      "name": "EPSS Gate",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -1536,
+        4528
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{\n  json: {\n    skipped: true,\n    reason: 'Low EPSS and non-critical CVSS',\n    cveId: $json.id || 'UNKNOWN',\n    epssScore: $json.epssScore || 0,\n    cvssScore: $json.cvssScore || 0\n  }\n}];"
+      },
+      "id": "bbfc6244-fbf6-42fe-98ff-c6f7ef729fb0",
+      "name": "Skip Low Priority CVEs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1312,
+        4688
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{$env.TELEGRAM_BOT_TOKEN}}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"chat_id\": \"{{$env.TELEGRAM_CHAT_ID}}\",\n  \"text\": \"⏭️ Skipped CVE\\n\\n<b>{{ $json.cveId }}</b>\\nEPSS: <code>{{ ($json.epssScore || 0).toFixed(3) }}</code>\\nCVSS: <code>{{ ($json.cvssScore || 0).toFixed(1) }}</code>\\n\\nReason: {{ $json.reason }}\",\n  \"parse_mode\": \"HTML\"\n}",
+        "options": {}
+      },
+      "id": "e7e10b44-0864-45b2-967d-13c090847593",
+      "name": "Alert Skipped CVE (Telegram)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1088,
+        4592
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"openai/gpt-oss-120b\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a senior cybersecurity journalist at TechRupt.me with 7+ years of offensive security experience.\\n\\nWrite a 500-700 word news article about a CVE. Follow this EXACT output format:\\n\\nLine 1: The article headline only (60-70 chars, SEO-optimized, must include the CVE ID). Do NOT prefix it with any label like HEADLINE or ##.\\n\\nLine 3 onward: Write the full article directly. Start with a 2-sentence lead paragraph (WHO, WHAT, WHEN, most impactful fact first, include CVSS score). Then 3-4 body paragraphs covering: technical root cause, attack vector and exploitability, real-world impact and affected systems, vendor/patch status.\\n\\nInclude a paragraph that starts with exactly: From a practitioner perspective — then add real offensive security insight about detection or exploitation nuance.\\n\\nEnd the article with a section titled What To Do containing 2-3 actionable bullet points (patch versions, workarounds, detection signatures).\\n\\nAfter the article body, add these metadata lines (each on its own line):\\nMETA: (under 155 chars, for SEO description)\\nTAGS: (5-7 lowercase keywords, comma-separated)\\nSLUG: (url-friendly, under 60 chars, include cve id)\\nCATEGORY: cybersecurity\\n\\nCRITICAL RULES:\\n- Do NOT output section labels like HEADLINE, LEAD, BODY, EXPERT TAKE. Just write the content directly.\\n- No hype words (groundbreaking, devastating, shocking).\\n- No filler phrases.\\n- No passive voice in the lead paragraph.\\n- Use specific numbers, software versions, CVSS scores, EPSS data.\\n- Write for a technical audience.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Write a TechRupt article:\\n\\nCVE: {{ $json.id }}\\nDescription: {{ $json.description }}\\nCVSS: {{ $json.cvssScore }}\\nSeverity: {{ $json.severity }}\\nAttack Vector: {{ $json.attackVector }}\\nPublished: {{ $json.published }}\\nEPSS Score: {{ $json.epssScore }} ({{ $json.epssLabel }})\\nEPSS Percentile: {{ $json.epssPercentile }}\"\n    }\n  ],\n  \"max_tokens\": 1500,\n  \"temperature\": 0.6\n}",
+        "options": {}
+      },
+      "id": "c05cd99f-7942-4baf-bbc7-df2cf398bc3b",
+      "name": "AI: CVE explainer",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1312,
+        4336
+      ],
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "ww21NQ6AA4g8mHSb",
+          "name": "Bearer Auth account 2"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const crypto = require('crypto');\nconst raw = $input.first().json?.choices?.[0]?.message?.content || '';\n\nconst body = raw\n  .replace(/^META:.+$/gim, '')\n  .replace(/^TAGS:.+$/gim, '')\n  .replace(/^SLUG:.+$/gim, '')\n  .replace(/^CATEGORY:.+$/gim, '')\n  .trim();\n\nconst tagsMatch = raw.match(/TAGS:\\s*(.+)/i);\nconst tags = tagsMatch ? tagsMatch[1].trim() : 'cve,security,vulnerability';\n\nconst LABEL_REGEX = /^(\\*\\*)?\\s*(headline|lead|body|intro|expert\\s*take|what\\s*to\\s*do|meta|tags|slug|category)\\s*(\\*\\*)?\\s*[:()]?\\s*(\\*\\*)?$/i;\nconst CHAR_COUNT_REGEX = /^.*\\(\\d+\\s*chars?\\).*$/i;\n\nfunction extractTitle(text) {\n  const lines = text.split('\\n').filter(l => l.trim());\n  for (const line of lines) {\n    const cleaned = line.replace(/\\*\\*/g, '').replace(/^#+\\s*/, '').trim();\n    if (LABEL_REGEX.test(cleaned)) continue;\n    if (CHAR_COUNT_REGEX.test(cleaned)) continue;\n    if (cleaned.length < 15) continue;\n    if (/^(meta|tags|slug|category):/i.test(cleaned)) continue;\n    return cleaned.substring(0, 200);\n  }\n  return null;\n}\n\nconst idx = $itemIndex || 0;\nconst epssItems = $('Merge EPSS + Filter').all();\nconst epss = epssItems[idx]?.json || epssItems[0]?.json || {};\n\nconst aiTitle = extractTitle(raw);\nconst cveId = epss.id || '';\n\nconst hash = cveId\n  ? crypto.createHash('sha256').update(cveId).digest('hex')\n  : crypto.createHash('sha256').update(aiTitle || Date.now().toString()).digest('hex');\n\nconst fallbackTitle = cveId\n  ? `${cveId}: ${(epss.description || 'Security Vulnerability').substring(0, 150)}`\n  : 'Untitled CVE Article';\n\nreturn [{\n  json: {\n    title: aiTitle || fallbackTitle,\n    bodySafe: body.length >= 100 ? body : `${cveId} — CVSS ${epss.cvssScore || 'N/A'}\\n\\n${epss.description || 'No AI body generated. Review manually.'}`,\n    category: 'cybersecurity',\n    sourceUrl: `https://nvd.nist.gov/vuln/detail/${cveId}`,\n    tags,\n    cveId,\n    hash,\n    epssScore: epss.epssScore || 0,\n    epssLabel: epss.epssLabel || '',\n    aiFallbackUsed: body.length < 100\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1088,
+        4400
+      ],
+      "id": "b7911bef-d501-4333-8807-39be0be10636",
+      "name": "Parse CVE AI Output"
+    },
+    {
+      "parameters": {
+        "jsCode": "function parseRichText(text) {\n  const parts = [];\n  const regex = /\\*\\*(.+?)\\*\\*/g;\n  let lastIndex = 0;\n  let match;\n  while ((match = regex.exec(text)) !== null) {\n    if (match.index > lastIndex) {\n      parts.push({ type: 'text', text: { content: text.slice(lastIndex, match.index).substring(0, 2000) } });\n    }\n    parts.push({ type: 'text', text: { content: match[1].substring(0, 2000) }, annotations: { bold: true } });\n    lastIndex = regex.lastIndex;\n  }\n  if (lastIndex < text.length) {\n    parts.push({ type: 'text', text: { content: text.slice(lastIndex).substring(0, 2000) } });\n  }\n  return parts.length ? parts : [{ type: 'text', text: { content: text.substring(0, 2000) } }];\n}\n\nfunction buildBlocks(bodyText) {\n  const lines = bodyText.split('\\n');\n  const blocks = [];\n  for (const line of lines) {\n    const trimmed = line.trim();\n    if (!trimmed) continue;\n    if (trimmed.startsWith('## ')) {\n      blocks.push({ object: 'block', type: 'heading_2', heading_2: { rich_text: parseRichText(trimmed.slice(3).trim()) } });\n    } else if (trimmed.startsWith('### ')) {\n      blocks.push({ object: 'block', type: 'heading_3', heading_3: { rich_text: parseRichText(trimmed.slice(4).trim()) } });\n    } else if (/^[-*]\\s+/.test(trimmed)) {\n      blocks.push({ object: 'block', type: 'bulleted_list_item', bulleted_list_item: { rich_text: parseRichText(trimmed.replace(/^[-*]\\s+/, '')) } });\n    } else if (/^\\d+\\.\\s+/.test(trimmed)) {\n      blocks.push({ object: 'block', type: 'numbered_list_item', numbered_list_item: { rich_text: parseRichText(trimmed.replace(/^\\d+\\.\\s+/, '')) } });\n    } else {\n      const chunks = trimmed.match(/.{1,2000}/gs) || [trimmed];\n      for (const chunk of chunks) {\n        blocks.push({ object: 'block', type: 'paragraph', paragraph: { rich_text: parseRichText(chunk) } });\n      }\n    }\n  }\n  return blocks.length ? blocks : [{ object: 'block', type: 'paragraph', paragraph: { rich_text: [{ type: 'text', text: { content: 'No content available' } }] } }];\n}\n\nconst title = ($json.title || 'Untitled Article').substring(0, 2000);\nconst children = buildBlocks($json.bodySafe || '');\nconst statusName = $json.aiFallbackUsed ? 'Failed' : 'Draft';\n\nreturn [{\n  json: {\n    notionPayload: {\n      parent: { database_id: '33a498f5eea880ea91ade7c84a685e6f' },\n      properties: {\n        'Sr.No': { title: [{ text: { content: title } }] },\n        Title: { rich_text: [{ text: { content: title } }] },\n        Status: { select: { name: statusName } },\n        Type: { select: { name: 'rapid-news' } },\n        Category: { select: { name: $json.category || 'cybersecurity' } },\n        Source: { url: $json.sourceUrl || 'https://nvd.nist.gov' },\n        Tags: { rich_text: [{ text: { content: $json.tags || '' } }] },\n        Hash: { rich_text: [{ text: { content: $json.hash || '' } }] }\n      },\n      children\n    }\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -864,
+        4400
+      ],
+      "id": "ce00cd65-c989-4316-9523-f56328774078",
+      "name": "Build CVE Notion Payload"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/pages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "notionApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{$json.notionPayload}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -640,
+        4400
+      ],
+      "id": "1eb6d282-3950-4818-8aaf-5378764500ec",
+      "name": "Create CVE Notion Page",
+      "credentials": {
+        "notionApi": {
+          "id": "5Yz8lFQRs70XmAzf",
+          "name": "Notion account 2"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * 5"
+            }
+          ]
+        }
+      },
+      "id": "457e0d8a-4d39-42b6-8088-8662c7c7b082",
+      "name": "Every Friday 9 AM",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1984,
+        5024
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/databases/33a498f5eea880ea91ade7c84a685e6f/query",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "notionApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"filter\": {\n    \"and\": [\n      {\n        \"timestamp\": \"created_time\",\n        \"created_time\": {\n          \"on_or_after\": \"{{ new Date(Date.now() - 7 * 86400000).toISOString().split('T')[0] }}\"\n        }\n      }\n    ]\n  },\n  \"sorts\": [{ \"timestamp\": \"created_time\", \"direction\": \"descending\" }],\n  \"page_size\": 50\n}",
+        "options": {}
+      },
+      "id": "40428ea1-466b-4a53-b151-58ae4db0f74a",
+      "name": "Get This Weeks Articles",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1760,
+        5024
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "5Yz8lFQRs70XmAzf",
+          "name": "Notion account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const pages = $input.first().json?.results || [];\n\n// Group by category for the newsletter\nconst byCategory = { ai: [], cybersecurity: [], 'tech-news': [] };\n\nfor (const p of pages) {\n  const title = p.properties?.Title?.rich_text?.[0]?.plain_text || p.properties?.Name?.title?.[0]?.plain_text || 'Untitled';\n  const url = p.properties?.Source?.url || '';\n  const category = p.properties?.Category?.select?.name || 'tech-news';\n  const tags = p.properties?.Tags?.rich_text?.[0]?.plain_text || '';\n  const item = { title, url, category, tags };\n\n  if (byCategory[category]) {\n    byCategory[category].push(item);\n  } else {\n    byCategory['tech-news'].push(item);\n  }\n}\n\n// Build structured article list with category sections\nlet articleList = '';\nfor (const [cat, articles] of Object.entries(byCategory)) {\n  if (articles.length === 0) continue;\n  articleList += `\\n=== ${cat.toUpperCase()} (${articles.length} articles) ===\\n`;\n  for (const a of articles) {\n    articleList += `• ${a.title}\\n  ${a.url}\\n`;\n  }\n}\n\nreturn [{ json: {\n  articleList,\n  articleCount: pages.length,\n  aiCount: byCategory.ai.length,\n  cyberCount: byCategory.cybersecurity.length,\n  techCount: byCategory['tech-news'].length\n} }];"
+      },
+      "id": "7caa7c8c-a582-43ea-b297-d8ffe2c65271",
+      "name": "Compile article list",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1536,
+        5024
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const safeArticleList = ($json.articleList || '').replace(/\\n/g, ' ').replace(/\"/g, '\\\\\"');\nreturn [{ json: { safeArticleList, aiCount: $json.aiCount, cyberCount: $json.cyberCount, techCount: $json.techCount } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1312,
+        5024
+      ],
+      "id": "6ad36f26-9306-4692-9afc-ddd04c367fe5",
+      "name": "Prepare Newsletter Input"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"openai/gpt-oss-120b\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are the editor of The TechRupt Brief, a weekly cybersecurity, AI, and tech newsletter. Your readers are security professionals, ML engineers, and tech leads who value speed and signal over fluff.\\n\\nStyle rules:\\n- Professional, sharp, zero filler\\n- Write for scanners: bold key terms, keep sentences tight\\n- No em dashes (use commas or parentheses)\\n- Avoid generic intros like 'This week in cybersecurity...'\\n- Use active voice throughout\\n- If an article lacks substance, skip it rather than pad\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Generate a newsletter digest from these articles (grouped by category):\\n\\n{{$json.safeArticleList}}\\n\\nOutput the following sections in this exact order:\\n\\n## OPENING\\nOne punchy sentence that captures this week's dominant theme across all three beats.\\n\\n## TOP AI & ML\\nPick the highest-impact AI/ML story. 3-4 sentences: what happened, why it matters, what's next. Bold the key takeaway.\\n\\n## TOP CYBER\\nPick the highest-impact security story. 3-4 sentences: what happened, who's affected, what to do. Bold the key takeaway.\\n\\n## TOP TECH\\nPick the highest-impact tech story. 3-4 sentences: what changed, who benefits/loses, what's next. Bold the key takeaway.\\n\\n## QUICK HITS\\n6-8 items across all categories, each 1-2 lines max. Format: **[Topic]** — what happened and why it matters. Mix categories. Prioritize by impact.\\n\\n## EDITOR'S PICK\\nRecommend one tool, report, framework, or resource relevant to this week's themes. 2-3 sentences.\\n\\n## NEXT WEEK\\nOne teaser sentence hinting at an emerging story or trend to watch.\"\n    }\n  ],\n  \"temperature\": 0.7,\n  \"max_tokens\": 2500\n}",
+        "options": {}
+      },
+      "id": "3f6411a7-521c-461c-b753-551be322bb51",
+      "name": "AI: Newsletter draft",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1088,
+        5024
+      ],
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "ww21NQ6AA4g8mHSb",
+          "name": "Bearer Auth account 2"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json?.choices?.[0]?.message?.content || '';\nconst subject = 'The TechRupt Brief - Week of ' + new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });\n\nfunction parseRichText(text) {\n  const parts = [];\n  const regex = /\\*\\*(.+?)\\*\\*/g;\n  let lastIndex = 0;\n  let match;\n  while ((match = regex.exec(text)) !== null) {\n    if (match.index > lastIndex) {\n      parts.push({ type: 'text', text: { content: text.slice(lastIndex, match.index).substring(0, 2000) } });\n    }\n    parts.push({ type: 'text', text: { content: match[1].substring(0, 2000) }, annotations: { bold: true } });\n    lastIndex = regex.lastIndex;\n  }\n  if (lastIndex < text.length) {\n    parts.push({ type: 'text', text: { content: text.slice(lastIndex).substring(0, 2000) } });\n  }\n  return parts.length ? parts : [{ type: 'text', text: { content: text.substring(0, 2000) } }];\n}\n\nconst lines = raw.split('\\n');\nconst blocks = [];\nfor (const line of lines) {\n  const trimmed = line.trim();\n  if (!trimmed) continue;\n  if (trimmed.startsWith('# ') && !trimmed.startsWith('## ')) {\n    blocks.push({ object: 'block', type: 'heading_1', heading_1: { rich_text: parseRichText(trimmed.slice(2)) } });\n  } else if (trimmed.startsWith('## ')) {\n    blocks.push({ object: 'block', type: 'heading_2', heading_2: { rich_text: parseRichText(trimmed.slice(3)) } });\n  } else if (trimmed.startsWith('### ')) {\n    blocks.push({ object: 'block', type: 'heading_3', heading_3: { rich_text: parseRichText(trimmed.slice(4)) } });\n  } else if (/^[-*]\\s+/.test(trimmed)) {\n    blocks.push({ object: 'block', type: 'bulleted_list_item', bulleted_list_item: { rich_text: parseRichText(trimmed.replace(/^[-*]\\s+/, '')) } });\n  } else if (/^\\d+\\.\\s+/.test(trimmed)) {\n    blocks.push({ object: 'block', type: 'numbered_list_item', numbered_list_item: { rich_text: parseRichText(trimmed.replace(/^\\d+\\.\\s+/, '')) } });\n  } else {\n    blocks.push({ object: 'block', type: 'paragraph', paragraph: { rich_text: parseRichText(trimmed) } });\n  }\n}\n\nreturn [{\n  json: {\n    notionPayload: {\n      parent: { database_id: '33a498f5eea880ea91ade7c84a685e6f' },\n      properties: {\n        'Sr.No': { title: [{ text: { content: subject } }] },\n        Title: { rich_text: [{ text: { content: subject } }] },\n        Status: { select: { name: 'Draft' } },\n        Type: { select: { name: 'newsletter' } },\n        Category: { select: { name: 'tech-news' } },\n        Tags: { rich_text: [{ text: { content: 'newsletter,weekly,digest' } }] }\n      },\n      children: blocks.length ? blocks.slice(0, 100) : [\n        { object: 'block', type: 'paragraph', paragraph: { rich_text: [{ type: 'text', text: { content: 'No content generated' } }] } }\n      ]\n    }\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -864,
+        5104
+      ],
+      "id": "77281a38-6df1-48be-8b40-fd5b038592a3",
+      "name": "Format Newsletter for Notion"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/pages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "notionApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{$json.notionPayload}}",
+        "options": {}
+      },
+      "id": "00fd73a6-a470-458d-8784-6c80c3ed025c",
+      "name": "Save Newsletter to Notion",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -640,
+        5104
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "5Yz8lFQRs70XmAzf",
+          "name": "Notion account 2"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const errorData = $input.first().json;\nconst timestamp = new Date().toISOString();\nconst nodeName = errorData?.execution?.lastNodeExecuted || 'Unknown';\nconst rawError = errorData?.execution?.error ?? errorData?.error ?? errorData;\nlet errorMsg;\nif (typeof rawError === 'string') { errorMsg = rawError; }\nelse if (rawError && typeof rawError === 'object') { errorMsg = JSON.stringify(rawError); }\nelse { errorMsg = String(rawError || 'Unknown error'); }\nerrorMsg = errorMsg.substring(0, 1000);\nreturn [{ json: { alertText: `⚠️ TechRupt Workflow Error\\n\\nNode: ${nodeName}\\nTime: ${timestamp}\\nError: ${errorMsg}`, timestamp, nodeName, errorMsg } }];"
+      },
+      "id": "8ba359bc-450e-4dce-a944-7d9349030b24",
+      "name": "Error Handler",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -416,
+        4336
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{$env.TELEGRAM_BOT_TOKEN}}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"chat_id\": \"{{$env.TELEGRAM_CHAT_ID}}\",\n  \"text\": \"{{ $json.alertText }}\",\n  \"parse_mode\": \"HTML\"\n}",
+        "options": {}
+      },
+      "id": "4dbd1e61-635c-4abf-a2f6-9ac0f4b5dbff",
+      "name": "Send Error Alert (Telegram)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -192,
+        4336
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 1 * *"
+            }
+          ]
+        }
+      },
+      "id": "a3c3bf7b-68a8-42cd-98ef-f3374a9851f3",
+      "name": "Monthly Stats (1st 9 AM)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -3776,
+        5328
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/databases/33a498f5eea880ea91ade7c84a685e6f/query",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "notionApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"filter\": {\n    \"timestamp\": \"created_time\",\n    \"created_time\": {\n      \"past_month\": 1\n    }\n  },\n  \"page_size\": 100\n}",
+        "options": {}
+      },
+      "id": "97745415-bff6-4c8f-8063-4196e05961b7",
+      "name": "Fetch Last Month Articles",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -3552,
+        5328
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "5Yz8lFQRs70XmAzf",
+          "name": "Notion account 2"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const pages = $input.first().json?.results || [];\nconst categoryCount = {};\nconst sourceCount = {};\nconst statusCount = {};\nlet aiSuccess = 0;\nlet total = pages.length;\n\nfor (const page of pages) {\n  const category = page.properties?.Category?.select?.name || 'uncategorized';\n  const source = page.properties?.Source?.url || 'unknown';\n  const status = page.properties?.Status?.select?.name || 'unknown';\n\n  categoryCount[category] = (categoryCount[category] || 0) + 1;\n  sourceCount[source] = (sourceCount[source] || 0) + 1;\n  statusCount[status] = (statusCount[status] || 0) + 1;\n  \n  if (status === 'Ready' || status === 'Published') {\n    aiSuccess++;\n  }\n}\n\nconst topCategory = Object.entries(categoryCount).sort((a, b) => b[1] - a[1])[0] || ['none', 0];\n\n// Category balance score\nconst aiPct = ((categoryCount['ai'] || 0) / Math.max(total, 1) * 100).toFixed(1);\nconst cyberPct = ((categoryCount['cybersecurity'] || 0) / Math.max(total, 1) * 100).toFixed(1);\nconst techPct = ((categoryCount['tech-news'] || 0) / Math.max(total, 1) * 100).toFixed(1);\n\nconst stats = {\n  totalArticles: total,\n  categories: Object.entries(categoryCount).map(([cat, count]) => `${cat}: ${count}`).join(', '),\n  categoryBalance: `AI: ${aiPct}% | Cyber: ${cyberPct}% | Tech: ${techPct}%`,\n  statusBreakdown: Object.entries(statusCount).map(([st, count]) => `${st}: ${count}`).join(', '),\n  aiSuccessRate: total > 0 ? ((aiSuccess / total) * 100).toFixed(1) : 0,\n  topCategory: topCategory[0],\n  topCategoryCount: topCategory[1]\n};\n\nreturn [{ json: stats }];"
+      },
+      "id": "080c41ff-aa50-45d3-9d42-8b7230cedb59",
+      "name": "Calculate Stats",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3328,
+        5328
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const monthYear = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });\nconst title = `📊 Stats — ${monthYear}`;\n\nfunction parseRichText(text) {\n  const parts = [];\n  const regex = /\\*\\*(.+?)\\*\\*/g;\n  let lastIndex = 0;\n  let match;\n  while ((match = regex.exec(text)) !== null) {\n    if (match.index > lastIndex) {\n      parts.push({ type: 'text', text: { content: text.slice(lastIndex, match.index).substring(0, 2000) } });\n    }\n    parts.push({ type: 'text', text: { content: match[1].substring(0, 2000) }, annotations: { bold: true } });\n    lastIndex = regex.lastIndex;\n  }\n  if (lastIndex < text.length) {\n    parts.push({ type: 'text', text: { content: text.slice(lastIndex).substring(0, 2000) } });\n  }\n  return parts.length ? parts : [{ type: 'text', text: { content: text.substring(0, 2000) } }];\n}\n\nconst body = `**Total Articles:** ${$json.totalArticles}\\n\\n**Category Balance:** ${$json.categoryBalance}\\n\\n**By Category:** ${$json.categories}\\n\\n**Status Breakdown:** ${$json.statusBreakdown}\\n\\n**AI Success Rate:** ${$json.aiSuccessRate}%\\n\\n**Top Category:** ${$json.topCategory} (${$json.topCategoryCount} articles)`;\n\nconst lines = body.split('\\n');\nconst blocks = [];\nfor (const line of lines) {\n  const trimmed = line.trim();\n  if (!trimmed) continue;\n  blocks.push({ object: 'block', type: 'paragraph', paragraph: { rich_text: parseRichText(trimmed) } });\n}\n\nreturn [{\n  json: {\n    notionPayload: {\n      parent: { database_id: '33a498f5eea880ea91ade7c84a685e6f' },\n      properties: {\n        'Sr.No': { title: [{ text: { content: title } }] },\n        Title: { rich_text: [{ text: { content: title } }] },\n        Status: { select: { name: 'Published' } },\n        Type: { select: { name: 'dashboard' } },\n        Category: { select: { name: 'meta' } },\n        Tags: { rich_text: [{ text: { content: 'stats,monthly,dashboard' } }] }\n      },\n      children: blocks.length ? blocks : [{ object: 'block', type: 'paragraph', paragraph: { rich_text: [{ type: 'text', text: { content: 'Stats generated' } }] } }]\n    }\n  }\n}];"
+      },
+      "id": "8074aa8e-a0b6-4ebd-81ce-75e2989a3bbb",
+      "name": "Build Stats Page",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3104,
+        5328
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/pages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "notionApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{$json.notionPayload}}",
+        "options": {}
+      },
+      "id": "e6c3aabf-9010-4f04-8979-8cc8f839fd4d",
+      "name": "Save Stats to Notion",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2880,
+        5328
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "5Yz8lFQRs70XmAzf",
+          "name": "Notion account 2"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const crypto = require('crypto');\nconst cveId = $json.cveId || 'UNKNOWN';\nconst hash = crypto.createHash('sha256').update(cveId).digest('hex');\nconst title = `${cveId} (Low Priority) — CVSS ${($json.cvssScore || 0).toFixed(1)}`;\n\nfunction parseRichText(text) {\n  const parts = [];\n  const regex = /\\*\\*(.+?)\\*\\*/g;\n  let lastIndex = 0;\n  let match;\n  while ((match = regex.exec(text)) !== null) {\n    if (match.index > lastIndex) {\n      parts.push({ type: 'text', text: { content: text.slice(lastIndex, match.index).substring(0, 2000) } });\n    }\n    parts.push({ type: 'text', text: { content: match[1].substring(0, 2000) }, annotations: { bold: true } });\n    lastIndex = regex.lastIndex;\n  }\n  if (lastIndex < text.length) {\n    parts.push({ type: 'text', text: { content: text.slice(lastIndex).substring(0, 2000) } });\n  }\n  return parts.length ? parts : [{ type: 'text', text: { content: text.substring(0, 2000) } }];\n}\n\nconst body = `**Reason:** ${$json.reason}\\n\\n**EPSS Score:** ${($json.epssScore || 0).toFixed(3)}\\n**CVSS Score:** ${($json.cvssScore || 0).toFixed(1)}\\n\\nArchived for future reference.`;\nconst lines = body.split('\\n');\nconst blocks = [];\nfor (const line of lines) {\n  const trimmed = line.trim();\n  if (!trimmed) continue;\n  blocks.push({ object: 'block', type: 'paragraph', paragraph: { rich_text: parseRichText(trimmed) } });\n}\n\nreturn [{\n  json: {\n    notionPayload: {\n      parent: { database_id: '33a498f5eea880ea91ade7c84a685e6f' },\n      properties: {\n        'Sr.No': { title: [{ text: { content: title } }] },\n        Title: { rich_text: [{ text: { content: title } }] },\n        Status: { select: { name: 'Low Priority' } },\n        Type: { select: { name: 'rapid-news' } },\n        Category: { select: { name: 'cybersecurity' } },\n        Source: { url: `https://nvd.nist.gov/vuln/detail/${cveId}` },\n        Tags: { rich_text: [{ text: { content: 'cve,low-priority,skipped' } }] },\n        Hash: { rich_text: [{ text: { content: hash } }] }\n      },\n      children: blocks\n    }\n  }\n}];"
+      },
+      "id": "ae8b0359-3e8a-47f0-9336-0c61aaa95b92",
+      "name": "Build Low Priority CVE Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1088,
+        4784
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/pages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "notionApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{$json.notionPayload}}",
+        "options": {}
+      },
+      "id": "0aeb597e-8b3e-4eaa-94c3-8c781acdb180",
+      "name": "Save Low Priority CVE to Notion",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -864,
+        4784
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "5Yz8lFQRs70XmAzf",
+          "name": "Notion account 2"
+        }
+      },
+      "onError": "continueRegularOutput"
+    }
+  ],
+  "connections": {
+    "Every 12 min": {
+      "main": [
+        [
+          {
+            "node": "Feed List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Feed List": {
+      "main": [
+        [
+          {
+            "node": "Fetch RSS via HTTP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch RSS via HTTP": {
+      "main": [
+        [
+          {
+            "node": "Parse RSS + Tag Source",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse RSS + Tag Source": {
+      "main": [
+        [
+          {
+            "node": "Dedup Score and Cluster",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dedup Score and Cluster": {
+      "main": [
+        [
+          {
+            "node": "Category Balance Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Category Balance Gate": {
+      "main": [
+        [
+          {
+            "node": "Fetch Existing Hashes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Existing Hashes": {
+      "main": [
+        [
+          {
+            "node": "Fetch Existing Hashes Page 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Existing Hashes Page 2": {
+      "main": [
+        [
+          {
+            "node": "Filter Already Published",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Already Published": {
+      "main": [
+        [
+          {
+            "node": "High Priority Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "High Priority Gate": {
+      "main": [
+        [
+          {
+            "node": "Build Category Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Roundup Guard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Category Prompt": {
+      "main": [
+        [
+          {
+            "node": "AI Draft News",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Draft News": {
+      "main": [
+        [
+          {
+            "node": "Parse AI Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse AI Output": {
+      "main": [
+        [
+          {
+            "node": "Build Notion Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Notion Payload": {
+      "main": [
+        [
+          {
+            "node": "Create Notion Draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Notion Draft": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Error Handler",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Roundup Guard": {
+      "main": [
+        [
+          {
+            "node": "Has Real Article?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Real Article?": {
+      "main": [
+        [
+          {
+            "node": "Save to Roundup DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save to Roundup DB": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Error Handler",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Every day 6 AM": {
+      "main": [
+        [
+          {
+            "node": "Fetch new CVEs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch new CVEs": {
+      "main": [
+        [
+          {
+            "node": "Parse CVE list",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse CVE list": {
+      "main": [
+        [
+          {
+            "node": "Has CVEs?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has CVEs?": {
+      "main": [
+        [
+          {
+            "node": "Fetch EPSS Score",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch EPSS Score": {
+      "main": [
+        [
+          {
+            "node": "Merge EPSS + Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge EPSS + Filter": {
+      "main": [
+        [
+          {
+            "node": "EPSS Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "EPSS Gate": {
+      "main": [
+        [
+          {
+            "node": "AI: CVE explainer",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Skip Low Priority CVEs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Skip Low Priority CVEs": {
+      "main": [
+        [
+          {
+            "node": "Alert Skipped CVE (Telegram)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Build Low Priority CVE Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI: CVE explainer": {
+      "main": [
+        [
+          {
+            "node": "Parse CVE AI Output",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error Handler",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse CVE AI Output": {
+      "main": [
+        [
+          {
+            "node": "Build CVE Notion Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build CVE Notion Payload": {
+      "main": [
+        [
+          {
+            "node": "Create CVE Notion Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create CVE Notion Page": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Error Handler",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Every Friday 9 AM": {
+      "main": [
+        [
+          {
+            "node": "Get This Weeks Articles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get This Weeks Articles": {
+      "main": [
+        [
+          {
+            "node": "Compile article list",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compile article list": {
+      "main": [
+        [
+          {
+            "node": "Prepare Newsletter Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Newsletter Input": {
+      "main": [
+        [
+          {
+            "node": "AI: Newsletter draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI: Newsletter draft": {
+      "main": [
+        [
+          {
+            "node": "Format Newsletter for Notion",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error Handler",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Newsletter for Notion": {
+      "main": [
+        [
+          {
+            "node": "Save Newsletter to Notion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Newsletter to Notion": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Error Handler",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Handler": {
+      "main": [
+        [
+          {
+            "node": "Send Error Alert (Telegram)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monthly Stats (1st 9 AM)": {
+      "main": [
+        [
+          {
+            "node": "Fetch Last Month Articles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Last Month Articles": {
+      "main": [
+        [
+          {
+            "node": "Calculate Stats",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Stats": {
+      "main": [
+        [
+          {
+            "node": "Build Stats Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Stats Page": {
+      "main": [
+        [
+          {
+            "node": "Save Stats to Notion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Low Priority CVE Payload": {
+      "main": [
+        [
+          {
+            "node": "Save Low Priority CVE to Notion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3dc6f2e2bb28f2831e8b9bb8ae28b01a936fd0e172ccb866645c14a3d074646e"
+  }
+}

@@ -6,6 +6,7 @@ const withBundleAnalyzer = process.env.ANALYZE === "true"
   : (config) => config;
 
 const nextConfig = {
+  allowedDevOrigins: ["127.0.0.1", "localhost"],
   // Force Next.js/Turbopack to compile these packages through its own pipeline
   // so they share the same React instance — fixes ReactCurrentBatchConfig crash
   transpilePackages: ["three", "@react-three/fiber", "@react-three/drei"],

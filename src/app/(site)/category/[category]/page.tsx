@@ -45,18 +45,18 @@ export default async function CategoryPage({ params }: PageProps) {
         
         {/* Header */}
         <div className="max-w-3xl mb-8">
-          <h1 className="font-display font-black text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-4">
+          <h1 className="font-display font-black text-4xl md:text-5xl lg:text-6xl text-slate-900 leading-tight mb-4">
             {category.name}
           </h1>
-          <p className="text-neutral-400 text-lg md:text-xl leading-relaxed">
+          <p className="text-slate-600 text-lg md:text-xl leading-relaxed">
             {category.description}
           </p>
         </div>
 
         {/* Stats */}
         {articles.length > 0 && (
-          <div className="inline-flex items-center gap-4 px-4 py-3 rounded-lg bg-white/5 border border-white/10">
-            <span className="text-sm font-display font-medium text-white">
+          <div className="inline-flex items-center gap-4 px-4 py-3 rounded-lg bg-white/70 border border-slate-200">
+            <span className="text-sm font-display font-medium text-slate-700">
               {articles.length} article{articles.length === 1 ? '' : 's'}
             </span>
           </div>
@@ -71,11 +71,11 @@ export default async function CategoryPage({ params }: PageProps) {
           ))}
         </div>
       ) : (
-        <div className="rounded-2xl border border-white/10 bg-surface-200 p-12 text-center">
-          <p className="text-neutral-400 font-display text-lg mb-2">
+        <div className="rounded-2xl border border-slate-200 bg-white/75 p-12 text-center">
+          <p className="text-slate-700 font-display text-lg mb-2">
             No articles yet in {category.name}
           </p>
-          <p className="text-neutral-500 text-sm">
+          <p className="text-slate-500 text-sm">
             Check back soon for coverage on this topic.
           </p>
         </div>

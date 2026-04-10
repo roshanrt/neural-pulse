@@ -92,7 +92,7 @@ export default async function ArticlePage({ params }: PageProps) {
       {/* Breadcrumb */}
       <Link
         href="/"
-        className="inline-flex items-center gap-1.5 text-sm text-neutral-500 hover:text-brand-500 transition-colors mb-8"
+        className="inline-flex items-center gap-1.5 text-sm text-neutral-500 hover:text-brand-700 transition-colors mb-8"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to Home
@@ -110,22 +110,22 @@ export default async function ArticlePage({ params }: PageProps) {
           {article.category.name}
         </span>
 
-        <h1 className="font-display font-black text-3xl md:text-5xl text-white leading-tight mb-4">
+        <h1 className="font-display font-black text-3xl md:text-5xl text-slate-900 leading-tight mb-4">
           {article.title}
         </h1>
 
-        <p className="text-neutral-400 text-lg leading-relaxed mb-6">
+        <p className="text-slate-600 text-lg leading-relaxed mb-6">
           {article.excerpt}
         </p>
 
       {/* Author & Meta Info */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-8 border-b border-white/5">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-8 border-b border-slate-200">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-brand-500/30 to-brand-500/10 border border-brand-500/20 flex items-center justify-center flex-shrink-0">
-              <span className="text-xs font-display font-bold text-brand-400">{article.author.name.charAt(0)}</span>
+              <span className="text-xs font-display font-bold text-brand-700">{article.author.name.charAt(0)}</span>
             </div>
             <div>
-              <p className="text-sm font-display font-semibold text-white">
+              <p className="text-sm font-display font-semibold text-slate-900">
                 {article.author.name}
               </p>
               <p className="text-xs text-neutral-500 flex items-center gap-1">
@@ -160,19 +160,19 @@ export default async function ArticlePage({ params }: PageProps) {
       </div>
 
       {/* Article body */}
-      <div className="prose prose-invert max-w-none mb-12">
+      <div className="prose max-w-none mb-12 prose-slate">
         <style>{`
-          .prose h1 { @apply font-display font-bold text-3xl md:text-4xl text-white mt-8 mb-4; }
-          .prose h2 { @apply font-display font-bold text-2xl md:text-3xl text-white mt-8 mb-3; }
-          .prose h3 { @apply font-display font-bold text-xl text-white mt-6 mb-3; }
-          .prose p { @apply text-neutral-300 leading-relaxed mb-4; }
-          .prose a { @apply text-brand-500 hover:text-brand-400 underline transition-colors; }
-          .prose code { @apply bg-surface-300 rounded px-1.5 py-0.5 text-sm font-mono text-brand-400; }
-          .prose pre { @apply bg-surface-300 rounded-lg p-4 overflow-x-auto my-6; }
-          .prose pre code { @apply bg-transparent p-0 text-neutral-300; }
-          .prose blockquote { @apply border-l-4 border-brand-500 pl-4 py-2 my-6 text-neutral-400 italic; }
+          .prose h1 { @apply font-display font-bold text-3xl md:text-4xl text-slate-900 mt-8 mb-4; }
+          .prose h2 { @apply font-display font-bold text-2xl md:text-3xl text-slate-900 mt-8 mb-3; }
+          .prose h3 { @apply font-display font-bold text-xl text-slate-900 mt-6 mb-3; }
+          .prose p { @apply text-slate-700 leading-relaxed mb-4; }
+          .prose a { @apply text-brand-700 hover:text-brand-600 underline transition-colors; }
+          .prose code { @apply bg-slate-200 rounded px-1.5 py-0.5 text-sm font-mono text-brand-700; }
+          .prose pre { @apply bg-slate-900 rounded-lg p-4 overflow-x-auto my-6; }
+          .prose pre code { @apply bg-transparent p-0 text-slate-100; }
+          .prose blockquote { @apply border-l-4 border-brand-600 pl-4 py-2 my-6 text-slate-600 italic; }
           .prose ul, .prose ol { @apply ml-6 mb-4; }
-          .prose li { @apply text-neutral-300 mb-2; }
+          .prose li { @apply text-slate-700 mb-2; }
           .prose img { @apply rounded-lg my-6 max-w-full; }
         `}</style>
         <MDXRemote
@@ -187,14 +187,14 @@ export default async function ArticlePage({ params }: PageProps) {
       </div>
 
       {/* Tags */}
-      <div className="space-y-4 mb-12 pb-8 border-b border-white/5">
-        <h3 className="font-display font-semibold text-neutral-300 text-sm uppercase tracking-wide">Tags</h3>
+      <div className="space-y-4 mb-12 pb-8 border-b border-slate-200">
+        <h3 className="font-display font-semibold text-slate-700 text-sm uppercase tracking-wide">Tags</h3>
         <div className="flex flex-wrap gap-2">
           {article.tags.map((tag) => (
             <Link
               key={tag}
               href={`/search?q=${encodeURIComponent(tag)}`}
-              className="px-3 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-400 text-xs font-display font-medium hover:bg-brand-500/20 hover:border-brand-500/50 transition-all duration-200"
+              className="px-3 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-700 text-xs font-display font-medium hover:bg-brand-500/20 hover:border-brand-500/50 transition-all duration-200"
             >
               #{tag}
             </Link>
@@ -205,7 +205,7 @@ export default async function ArticlePage({ params }: PageProps) {
       {/* Related articles */}
       {related.length > 0 && (
         <section className="mb-12">
-          <h2 className="font-display font-bold text-xl text-white mb-6">
+          <h2 className="font-display font-bold text-xl text-slate-900 mb-6">
             Related in {article.category.name}
           </h2>
           <div className="grid sm:grid-cols-2 gap-6">

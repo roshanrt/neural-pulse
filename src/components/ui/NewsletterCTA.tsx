@@ -41,7 +41,7 @@ export default function NewsletterCTA() {
   };
 
   return (
-    <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-surface-200 to-surface-300 border border-slate-200 p-8 md:p-12">
+    <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/90 to-slate-100/80 border border-slate-200 p-8 md:p-12 shadow-[0_18px_40px_rgba(15,23,42,0.1)]">
       <div
         className="absolute inset-0 opacity-10"
         aria-hidden="true"
@@ -62,8 +62,8 @@ export default function NewsletterCTA() {
         </div>
 
         {status === "success" ? (
-          <div className="rounded-lg bg-brand-500/10 border border-brand-500/30 p-4 text-center">
-            <p className="text-brand-400 font-display font-medium text-sm">
+            <div className="rounded-lg bg-brand-500/10 border border-brand-500/30 p-4 text-center">
+            <p className="text-brand-700 font-display font-medium text-sm">
               ✓ You&apos;re in! Check your inbox to confirm.
             </p>
           </div>
@@ -86,7 +86,7 @@ export default function NewsletterCTA() {
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={status === "loading"}
                 aria-describedby={errorMessage ? "newsletter-error" : undefined}
-                className="flex-1 px-4 py-3 rounded-lg bg-white border border-slate-300 text-slate-900 placeholder:text-neutral-500 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-4 py-3 rounded-lg bg-white border border-slate-300 text-slate-900 placeholder:text-neutral-500 focus:outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/20 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               />
               <button
                 type="submit"
@@ -110,8 +110,8 @@ export default function NewsletterCTA() {
               <p
                 id="newsletter-error"
                 role="alert"
-                className="text-red-400 text-xs text-center px-2"
-              >
+                 className="text-red-600 text-xs text-center px-2"
+               >
                 {errorMessage}
               </p>
             )}

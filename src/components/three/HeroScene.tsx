@@ -27,11 +27,11 @@ function ParticleField() {
       pos[i3 + 1] = seededRange(i * 3 + 2, -5, 5);
       pos[i3 + 2] = seededRange(i * 3 + 3, -5, 5);
 
-      // Mix of green (#00ff88) and cyan (#00cccc) particles
+      // Mix of green and slate-blue particles
       const isGreen = seededUnit(i * 7 + 11) > 0.4;
-      col[i3] = isGreen ? 0 : 0;
-      col[i3 + 1] = isGreen ? 1 : 0.8;
-      col[i3 + 2] = isGreen ? 0.53 : 0.8;
+      col[i3] = isGreen ? 0.0 : 0.18;
+      col[i3 + 1] = isGreen ? 0.79 : 0.35;
+      col[i3 + 2] = isGreen ? 0.43 : 0.84;
     }
 
     return [pos, col];
@@ -84,7 +84,7 @@ function FloatingRing() {
   return (
     <mesh ref={ringRef} position={[0, 0, -2]}>
       <torusGeometry args={[2.5, 0.015, 16, 100]} />
-      <meshBasicMaterial color="#00ff88" transparent opacity={0.2} />
+      <meshBasicMaterial color="#2d58d5" transparent opacity={0.22} />
     </mesh>
   );
 }

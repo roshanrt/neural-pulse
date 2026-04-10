@@ -47,30 +47,30 @@ export default function AboutPage() {
           ].map((item) => {
             const Icon = item.icon;
             return (
-              <div key={item.title} className="rounded-2xl bg-surface-200 border border-white/5 p-5">
+              <div key={item.title} className="glass-panel p-5">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-500/10 text-brand-500 mb-4">
                   <Icon className="h-5 w-5" />
                 </div>
-                <h2 className="font-display font-semibold text-white mb-2">{item.title}</h2>
-                <p className="text-sm text-neutral-400 leading-relaxed">{item.description}</p>
+                <h2 className="font-display font-semibold text-slate-900 mb-2">{item.title}</h2>
+                <p className="text-sm text-slate-600 leading-relaxed">{item.description}</p>
               </div>
             );
           })}
         </div>
 
-        <div className="rounded-2xl bg-surface-200 border border-white/5 p-6 md:p-8">
-          <h2 className="font-display font-bold text-xl text-white mb-6">Our editorial rules</h2>
+        <div className="glass-panel p-6 md:p-8">
+          <h2 className="font-display font-bold text-xl text-slate-900 mb-6">Our editorial rules</h2>
           <div className="grid gap-4">
             {values.map((item) => {
               const Icon = item.icon;
               return (
-                <div key={item.title} className="flex gap-4 rounded-xl bg-surface-300/50 p-5">
+                <div key={item.title} className="flex gap-4 rounded-xl bg-slate-100/70 p-5">
                   <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-brand-500/10 text-brand-500">
                     <Icon className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="font-display font-semibold text-white mb-1">{item.title}</h3>
-                    <p className="text-sm text-neutral-400 leading-relaxed">{item.description}</p>
+                    <h3 className="font-display font-semibold text-slate-900 mb-1">{item.title}</h3>
+                    <p className="text-sm text-slate-600 leading-relaxed">{item.description}</p>
                   </div>
                 </div>
               );
@@ -78,16 +78,16 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl bg-surface-200 border border-white/5 p-6 md:p-8">
-          <h2 className="font-display font-bold text-xl text-white mb-4">About the editor</h2>
-          <p className="text-neutral-400 leading-relaxed mb-4">
+        <div className="glass-panel p-6 md:p-8">
+          <h2 className="font-display font-bold text-xl text-slate-900 mb-4">About the editor</h2>
+          <p className="text-slate-600 leading-relaxed mb-4">
             Roshan writes on the intersection of AI capabilities and security implications, with hands-on offensive and defensive security experience.
           </p>
           <div className="flex gap-3 flex-wrap">
-            <a href={siteConfig.links.twitter} className="px-4 py-2 rounded-full bg-white/5 text-sm text-neutral-300 hover:text-brand-500 transition-colors" target="_blank" rel="noopener noreferrer">
+            <a href={siteConfig.links.twitter} className="px-4 py-2 rounded-full bg-slate-100 text-sm text-slate-600 hover:text-brand-700 transition-colors" target="_blank" rel="noopener noreferrer">
               Twitter / X
             </a>
-            <a href={siteConfig.links.github} className="px-4 py-2 rounded-full bg-white/5 text-sm text-neutral-300 hover:text-brand-500 transition-colors" target="_blank" rel="noopener noreferrer">
+            <a href={siteConfig.links.github} className="px-4 py-2 rounded-full bg-slate-100 text-sm text-slate-600 hover:text-brand-700 transition-colors" target="_blank" rel="noopener noreferrer">
               GitHub
             </a>
           </div>

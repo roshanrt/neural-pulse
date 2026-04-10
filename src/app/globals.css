@@ -8,15 +8,24 @@
   --font-display: "Outfit", system-ui, sans-serif;
   --font-body: "Source Serif 4", Georgia, serif;
   --font-mono: "JetBrains Mono", monospace;
+  --bg-base: #f5f8fc;
+  --bg-soft: #e9f1fb;
+  --bg-warm: #f8f5ef;
+  --text-main: #0f172a;
 }
 
 @layer base {
   body {
-    @apply bg-surface-50 text-neutral-800 font-body antialiased;
+    @apply text-neutral-800 font-body antialiased;
+    background:
+      radial-gradient(1200px 700px at -10% -20%, rgba(0, 255, 136, 0.1), transparent 55%),
+      radial-gradient(900px 600px at 110% -10%, rgba(51, 102, 255, 0.1), transparent 55%),
+      linear-gradient(160deg, var(--bg-base) 0%, var(--bg-soft) 38%, var(--bg-warm) 100%);
+    color: var(--text-main);
   }
 
   ::selection {
-    background: rgba(0, 255, 136, 0.25);
+    background: rgba(0, 201, 109, 0.25);
     color: #0f172a;
   }
 
@@ -34,55 +43,45 @@
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #00ff88;
+    background: #2d58d5;
   }
 }
 
 @layer components {
-  /* Text & Gradients */
   .text-gradient {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, #00ff88 0%, #00cccc 50%, #3366ff 100%);
+    background-image: linear-gradient(135deg, #00c96d 0%, #009fb4 52%, #2d58d5 100%);
   }
 
-  /* Glowing effects */
   .glow-green {
-    box-shadow: 0 0 20px rgba(0, 255, 136, 0.15), 0 0 60px rgba(0, 255, 136, 0.05);
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.1), 0 0 0 1px rgba(15, 23, 42, 0.04);
   }
 
   .glow-line {
     @apply h-px w-full;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(0, 255, 136, 0.4) 50%,
-      transparent 100%
-    );
+    background: linear-gradient(90deg, transparent 0%, rgba(45, 88, 213, 0.35) 50%, transparent 100%);
   }
 
-  /* Card interactions */
   .card-hover {
     @apply transition-all duration-300 ease-out;
   }
 
   .card-hover:hover {
     @apply -translate-y-1.5;
-    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12), 0 0 16px rgba(0, 255, 136, 0.08);
+    box-shadow: 0 20px 44px rgba(15, 23, 42, 0.14), 0 0 0 1px rgba(15, 23, 42, 0.05);
   }
 
-  /* Badges */
   .category-badge {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-display font-semibold tracking-widest uppercase;
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-display font-semibold tracking-widest uppercase border;
     letter-spacing: 0.08em;
   }
 
-  /* Navigation */
   .nav-link {
-    @apply relative text-neutral-600 hover:text-neutral-900 transition-colors duration-200 text-sm font-display font-medium tracking-wide;
+    @apply relative text-slate-600 hover:text-slate-900 transition-colors duration-200 text-sm font-display font-medium tracking-wide;
   }
 
   .nav-link::after {
-    @apply absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-500 transition-all duration-300 origin-left;
+    @apply absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-600 transition-all duration-300 origin-left;
     content: "";
   }
 
@@ -90,29 +89,28 @@
     @apply w-full;
   }
 
-  /* Buttons */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-brand-500 text-surface-0 font-display font-semibold text-sm rounded-full transition-all duration-200 ease-out;
-    box-shadow: 0 4px 15px rgba(0, 255, 136, 0.15);
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-slate-900 text-slate-50 font-display font-semibold text-sm rounded-full transition-all duration-200 ease-out;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.2);
   }
 
   .btn-primary:hover {
-    @apply bg-brand-400 -translate-y-0.5;
-    box-shadow: 0 6px 25px rgba(0, 255, 136, 0.25);
+    @apply bg-slate-800 -translate-y-0.5;
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.24);
   }
 
   .btn-primary:active {
     @apply translate-y-0;
-    box-shadow: 0 2px 8px rgba(0, 255, 136, 0.2);
+    box-shadow: 0 7px 16px rgba(15, 23, 42, 0.2);
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 border border-slate-300 text-slate-800 font-display font-semibold text-sm rounded-full transition-all duration-200 ease-out bg-white;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 border border-slate-300 text-slate-800 font-display font-semibold text-sm rounded-full transition-all duration-200 ease-out bg-white/90;
   }
 
   .btn-secondary:hover {
-    @apply bg-slate-100 border-slate-400 -translate-y-0.5;
-    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
+    @apply bg-white border-slate-400 -translate-y-0.5;
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
   }
 
   .btn-secondary:active {
@@ -123,14 +121,13 @@
     @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-neutral-600 hover:text-neutral-900 transition-colors duration-200;
   }
 
-  /* Form elements */
   .input-field {
-    @apply w-full px-4 py-3 rounded-lg bg-white border border-slate-300 text-slate-900 placeholder:text-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500/40 transition-all duration-200;
+    @apply w-full px-4 py-3 rounded-lg bg-white border border-slate-300 text-slate-900 placeholder:text-slate-500 focus:outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900/20 transition-all duration-200;
   }
 
-  /* Loading & animations */
   @keyframes pulse-brand {
-    0%, 100% {
+    0%,
+    100% {
       opacity: 1;
     }
     50% {
@@ -152,27 +149,30 @@
   }
 
   .shimmer-load {
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
     background-size: 1000px 100%;
     animation: shimmer 2s infinite;
   }
 
-  /* Link styles */
   .link-underline {
-    @apply text-brand-500 hover:text-brand-400 relative transition-colors duration-200;
+    @apply text-slate-900 hover:text-brand-600 relative transition-colors duration-200;
   }
 
   .link-underline::after {
-    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-brand-500 transition-all duration-300;
+    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-brand-600 transition-all duration-300;
     content: "";
   }
 
   .link-underline:hover::after {
     @apply w-full;
   }
+
+  .glass-panel {
+    @apply rounded-2xl border border-slate-200 bg-white/75 backdrop-blur-sm;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+  }
 }
 
-/* Three.js canvas container */
 .three-canvas {
   position: absolute;
   top: 0;

@@ -13,11 +13,11 @@ export default function ArticleCard({ article, variant = "default" }: ArticleCar
     return (
       <Link
         href={`/article/${article.slug}`}
-        className="group relative flex flex-col h-full overflow-hidden rounded-2xl bg-surface-200 border border-slate-200 hover:border-slate-300 card-hover transition-all"
+        className="group relative flex flex-col h-full overflow-hidden rounded-2xl bg-white/75 backdrop-blur-sm border border-slate-200 hover:border-slate-300 card-hover transition-all"
       >
         {/* Image placeholder */}
         <div className="aspect-[16/9] bg-surface-300 relative overflow-hidden flex-shrink-0">
-          <div className="absolute inset-0 bg-gradient-to-t from-surface-200 via-transparent to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white/60 via-transparent to-transparent z-10" />
           <div
             className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-300"
             style={{
@@ -36,7 +36,7 @@ export default function ArticleCard({ article, variant = "default" }: ArticleCar
           >
             {article.category.name}
           </span>
-          <h2 className="font-display font-bold text-xl md:text-2xl text-slate-900 mb-2 group-hover:text-brand-500 transition-colors leading-tight">
+          <h2 className="font-display font-bold text-xl md:text-2xl text-slate-900 mb-2 group-hover:text-brand-700 transition-colors leading-tight">
             {article.title}
           </h2>
           <p className="text-neutral-700 text-sm leading-relaxed line-clamp-2 mb-4 flex-grow">
@@ -65,7 +65,7 @@ export default function ArticleCard({ article, variant = "default" }: ArticleCar
     return (
       <Link
         href={`/article/${article.slug}`}
-        className="group flex gap-3 py-3 border-b border-slate-200 last:border-0 hover:bg-surface-300/30 transition-colors rounded px-1"
+        className="group flex gap-3 py-3 border-b border-slate-200 last:border-0 hover:bg-slate-100/70 transition-colors rounded px-1"
       >
         <div className="flex-1 min-w-0">
           <span
@@ -77,7 +77,7 @@ export default function ArticleCard({ article, variant = "default" }: ArticleCar
           >
             {article.category.name}
           </span>
-          <h3 className="font-display font-semibold text-xs text-slate-800 group-hover:text-brand-500 transition-colors leading-tight line-clamp-2">
+          <h3 className="font-display font-semibold text-xs text-slate-800 group-hover:text-brand-700 transition-colors leading-tight line-clamp-2">
             {article.title}
           </h3>
           <span className="text-[10px] text-neutral-600 mt-0.5 block">
@@ -92,11 +92,11 @@ export default function ArticleCard({ article, variant = "default" }: ArticleCar
   return (
     <Link
       href={`/article/${article.slug}`}
-      className="group flex flex-col h-full overflow-hidden rounded-xl bg-surface-200 border border-slate-200 hover:border-slate-300 card-hover transition-all"
+      className="group flex flex-col h-full overflow-hidden rounded-xl bg-white/75 backdrop-blur-sm border border-slate-200 hover:border-slate-300 card-hover transition-all"
     >
       <div className="aspect-[16/10] bg-surface-300 relative overflow-hidden flex-shrink-0">
         <div
-          className="absolute inset-0 opacity-15 group-hover:opacity-25 transition-opacity duration-300"
+          className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-300"
           style={{
             background: `radial-gradient(circle at 50% 50%, ${article.category.color}44, transparent 70%)`,
           }}
@@ -112,7 +112,7 @@ export default function ArticleCard({ article, variant = "default" }: ArticleCar
         >
           {article.category.name}
         </span>
-        <h3 className="font-display font-bold text-base text-slate-900 mb-1.5 group-hover:text-brand-500 transition-colors leading-snug line-clamp-2">
+         <h3 className="font-display font-bold text-base text-slate-900 mb-1.5 group-hover:text-brand-700 transition-colors leading-snug line-clamp-2">
           {article.title}
         </h3>
         <p className="text-neutral-700 text-sm line-clamp-2 leading-relaxed mb-3 flex-grow">

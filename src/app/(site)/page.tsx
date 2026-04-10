@@ -22,7 +22,7 @@ export default async function HomePage() {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 mb-6 animate-fade-in">
               <span className="h-1.5 w-1.5 rounded-full bg-brand-500 animate-pulse-brand" />
-              <span className="text-brand-500 text-xs font-display font-semibold tracking-widest uppercase">
+              <span className="text-brand-700 text-xs font-display font-semibold tracking-widest uppercase">
                 LIVE COVERAGE
               </span>
             </div>
@@ -57,10 +57,10 @@ export default async function HomePage() {
       </section>
 
       {/* ── Featured Articles ── */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 py-16 mb-16 border-b border-slate-200">
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 py-16 mb-16 border-b border-slate-200/80">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
-            <TrendingUp className="h-6 w-6 text-brand-500" />
+            <TrendingUp className="h-6 w-6 text-brand-700" />
             <h2 className="font-display font-bold text-2xl text-slate-900">
               Top Story
             </h2>
@@ -70,7 +70,7 @@ export default async function HomePage() {
       </section>
 
       {featuredGrid.length > 0 && (
-        <section className="mx-auto max-w-7xl px-4 sm:px-6 py-16 mb-16 border-b border-slate-200">
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 py-16 mb-16 border-b border-slate-200/80">
           <h2 className="font-display font-bold text-2xl text-slate-900 mb-8">
             Featured Stories
           </h2>
@@ -104,7 +104,7 @@ export default async function HomePage() {
           {/* Sidebar */}
           <aside className="flex flex-col gap-8">
             {/* Categories */}
-            <div className="rounded-xl bg-surface-200 border border-slate-200 p-6">
+            <div className="glass-panel p-6">
               <h3 className="font-display font-bold text-sm text-slate-800 mb-4 uppercase tracking-widest">
                 Explore Topics
               </h3>
@@ -127,8 +127,8 @@ export default async function HomePage() {
             </div>
 
             {/* Trending (placeholder) */}
-            <div className="rounded-xl bg-surface-200 border border-slate-200 p-6 max-h-96 overflow-y-auto">
-              <h3 className="font-display font-bold text-sm text-slate-800 mb-4 uppercase tracking-widest sticky top-0 bg-surface-200 pb-2">
+            <div className="glass-panel p-6 max-h-96 overflow-y-auto">
+              <h3 className="font-display font-bold text-sm text-slate-800 mb-4 uppercase tracking-widest sticky top-0 bg-white/80 pb-2">
                 Trending Now
               </h3>
               <div className="space-y-0.5">

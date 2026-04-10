@@ -40,17 +40,17 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       <div className="max-w-3xl mb-12">
         {/* Header */}
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 mb-6">
-          <Search className="h-4 w-4 text-brand-500" />
-          <span className="text-brand-500 text-xs font-display font-semibold tracking-widest uppercase">
+          <Search className="h-4 w-4 text-brand-700" />
+          <span className="text-brand-700 text-xs font-display font-semibold tracking-widest uppercase">
             Search
           </span>
         </div>
 
-        <h1 className="font-display font-black text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-4">
+        <h1 className="font-display font-black text-4xl md:text-5xl lg:text-6xl text-slate-900 leading-tight mb-4">
           Find articles across all topics
         </h1>
 
-        <p className="text-neutral-400 text-lg leading-relaxed mb-8">
+        <p className="text-slate-600 text-lg leading-relaxed mb-8">
           Search by title, topic, author, or keyword to discover relevant articles.
         </p>
 
@@ -76,8 +76,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
       {query ? (
         <div className="mb-8">
-          <p className="text-sm text-neutral-400 font-display">
-            {results.length} result{results.length === 1 ? '' : 's'} for <span className="text-white font-semibold">"{query}"</span>
+          <p className="text-sm text-slate-600 font-display">
+            {results.length} result{results.length === 1 ? '' : 's'} for <span className="text-slate-900 font-semibold">"{query}"</span>
           </p>
         </div>
       ) : null}
@@ -89,9 +89,9 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           ))}
         </div>
       ) : (
-        <div className="rounded-2xl border border-white/10 bg-surface-200 p-12 text-center">
+        <div className="rounded-2xl border border-slate-200 bg-white/75 p-12 text-center">
           <Search className="h-12 w-12 text-neutral-600 mx-auto mb-4 opacity-50" />
-          <p className="text-neutral-300 font-display text-lg mb-2">
+          <p className="text-slate-700 font-display text-lg mb-2">
             {query ? 'No articles found' : 'Start searching to discover articles'}
           </p>
           <p className="text-neutral-500 text-sm max-w-md mx-auto">

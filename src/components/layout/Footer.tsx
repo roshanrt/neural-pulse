@@ -4,7 +4,7 @@ import { siteConfig, categories } from "@/data/config";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-slate-200 bg-white mt-20">
+    <footer className="border-t border-slate-200/80 bg-white/70 mt-20 backdrop-blur-sm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-16 md:py-20">
         {/* Main footer grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
@@ -31,7 +31,7 @@ export default function Footer() {
                 <li key={cat.slug}>
                   <Link
                     href={`/category/${cat.slug}`}
-                    className="text-sm text-neutral-600 hover:text-brand-600 transition-colors"
+                    className="text-sm text-neutral-600 hover:text-brand-700 transition-colors"
                   >
                     {cat.name}
                   </Link>
@@ -50,7 +50,7 @@ export default function Footer() {
                 <li key={item}>
                   <Link
                     href={`/${item.toLowerCase().replace(/\s+/g, "-")}`}
-                    className="text-sm text-neutral-600 hover:text-brand-600 transition-colors"
+                    className="text-sm text-neutral-600 hover:text-brand-700 transition-colors"
                   >
                     {item}
                   </Link>
@@ -70,7 +70,7 @@ export default function Footer() {
                   <li key={item}>
                     <Link
                       href={`/${item.toLowerCase().replace(/\s+/g, "-")}`}
-                      className="text-sm text-neutral-600 hover:text-brand-600 transition-colors"
+                      className="text-sm text-neutral-600 hover:text-brand-700 transition-colors"
                     >
                       {item}
                     </Link>
@@ -96,7 +96,7 @@ export default function Footer() {
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs text-neutral-500 hover:text-brand-600 transition-colors capitalize font-display font-medium"
+                className="text-xs text-neutral-500 hover:text-brand-700 transition-colors capitalize font-display font-medium"
               >
                 {platform}
               </a>

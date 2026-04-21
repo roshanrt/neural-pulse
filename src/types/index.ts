@@ -48,6 +48,40 @@ export interface ArticleBundleOutput {
   json: ArticleJsonOutput;
 }
 
+export type StoryStatus =
+  | "queued"
+  | "verifying"
+  | "approved"
+  | "published"
+  | "corrected";
+
+export type StorySeverity = "low" | "medium" | "high" | "critical";
+
+export interface StoryEvidence {
+  url: string;
+  source: string;
+  label?: string;
+}
+
+export interface StoryRecord {
+  id: string;
+  status: StoryStatus;
+  confidenceScore: number;
+  confidenceLabel: "low" | "medium" | "high";
+  verificationNotes: string[];
+  corroborationCount: number;
+  severity: StorySeverity;
+  patchStatus: string;
+  exploitStatus: string;
+  affectedProducts: string[];
+  iocs: string[];
+  evidence: StoryEvidence[];
+  createdAt: string;
+  updatedAt: string;
+  publishedAt?: string;
+  article: ArticleJsonOutput;
+}
+
 export interface Author {
   name: string;
   slug: string;

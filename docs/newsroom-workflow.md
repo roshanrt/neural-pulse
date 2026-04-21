@@ -74,3 +74,54 @@ Use the template in `content/articles/_article-template.mdx`.
 - Prompt A: Draft the article from source.
 - Prompt B: "Find unsupported claims and weak transitions in this draft."
 - Apply fixes manually after verification.
+
+## API-Driven Editorial Desk (v2)
+
+Use this flow when feeding external automation (Python/n8n) into Neural Pulse.
+
+### 1) Ingest Stories
+
+- Endpoint: `POST /api/articles/ingest`
+- Purpose: Accept raw story items, normalize them, run verification scoring, and place them into the editor queue.
+
+Request example:
+
+```json
+{
+  "defaultCorroborationCount": 2,
+  "items": [
+    {
+      "title": "CVE-2026-9999 actively exploited in the wild",
+      "category": "cybersecurity",
+      "source": "Vendor Advisory",
+      "sourceUrl": "https://vendor.example/advisory",
+      "rawText": "..."
+    }
+  ]
+}
+```
+
+### 2) Review Queue
+
+- UI: `/editor/queue`
+- API: `GET /api/editor/queue` (optional `?status=verifying` etc.)
+- Goal: Ensure high-impact stories have strong corroboration and acceptable confidence.
+
+### 3) Publish Approved Stories
+
+- Endpoint: `POST /api/articles/publish`
+- Use either `storyIds` for explicit publishing or `publishApproved: true` to publish all approved items.
+
+Request example:
+
+```json
+{
+  "publishApproved": true
+}
+```
+
+### 4) Verification Standard
+
+- Require at least 2 corroborating sources for high/critical stories.
+- Keep stories in `verifying` until confidence reaches your publish threshold.
+- Always document verification notes for traceability and corrections.
